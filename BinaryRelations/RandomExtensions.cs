@@ -7,9 +7,9 @@ namespace MaxRev.Extensions.Matrix
         public static int LowRandBounds = 0;
         public static int MaxRandBounds = 1;
         /// <summary>
-        /// Normalizes output of matrix randomizer
+        /// Normalizes float point output of matrix randomizer. Default is 1.0 / 100
         /// </summary>
-        public static double normalizer = 1.0 / 100.0;
+        public static double Normalizer = 1.0 / 100.0;
         private static readonly Random _rand = new Random();
         public static void Randomize(double[,] array)
         {
@@ -17,7 +17,7 @@ namespace MaxRev.Extensions.Matrix
             {
                 for (int j = 0; j < array.GetLength(1); j++)
                 {
-                    array[i, j] = _rand.Next(LowRandBounds, MaxRandBounds) * normalizer;
+                    array[i, j] = _rand.Next(LowRandBounds, MaxRandBounds) * Normalizer;
                 }
             }
         }

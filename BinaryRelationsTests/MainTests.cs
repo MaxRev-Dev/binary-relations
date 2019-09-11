@@ -36,6 +36,7 @@ namespace BinaryRelationsTests
             };
             Assert.Equal(expected.PrintThrought(mock), MatrixExtensions.Multiply(m1, m2).PrintThrought(mock));
         }
+
         [Fact]
         public void AddMatrices()
         {
@@ -59,8 +60,9 @@ namespace BinaryRelationsTests
             };
             Assert.Equal(expected, MatrixExtensions.Add(m1, m2));
         }
+
         [Fact]
-        public void SubstractMatrices()
+        public void SubtractMatrices()
         {
             var m1 = new double[,]
             {
@@ -82,6 +84,7 @@ namespace BinaryRelationsTests
             };
             Assert.Equal(expected, MatrixExtensions.Subtract(m1, m2));
         }
+
         [Fact]
         public void Complementation()
         {
@@ -101,6 +104,7 @@ namespace BinaryRelationsTests
             }.Cast<int, bool>();
             Assert.Equal(expected, m1.Complementation());
         }
+
         [Fact]
         public void Intersection()
         {
@@ -127,6 +131,7 @@ namespace BinaryRelationsTests
             }.Cast<int, bool>();
             Assert.Equal(expected, m1.Intersection(m2));
         }
+
         [Fact]
         public void Union()
         {
@@ -153,6 +158,7 @@ namespace BinaryRelationsTests
             }.Cast<int, bool>();
             Assert.Equal(expected, m1.Union(m2));
         }
+
         [Fact]
         public void Difference()
         {
@@ -179,8 +185,9 @@ namespace BinaryRelationsTests
             }.Cast<int, bool>();
             Assert.Equal(expected, m1.Difference(m2));
         }
+
         [Fact]
-        public void SymericDifference()
+        public void SymmericDifference()
         {
             var m1 = new[,]
             {
@@ -205,6 +212,7 @@ namespace BinaryRelationsTests
             }.Cast<int, bool>();
             Assert.Equal(expected, m1.SymmetricDifference(m2));
         }
+
         [Fact]
         public void Narrowing()
         {
@@ -224,6 +232,7 @@ namespace BinaryRelationsTests
             }.Cast<int, bool>();
             Assert.Equal(expected, m1.Narrowing(2, 3));
         }
+
         [Fact]
         public void Reverse()
         {
@@ -243,6 +252,7 @@ namespace BinaryRelationsTests
             }.Cast<int, bool>();
             Assert.Equal(expected, m1.Reverse());
         }
+
         [Fact]
         public void IsDiagonalRelation()
         {
@@ -255,6 +265,7 @@ namespace BinaryRelationsTests
             }.Cast<int, bool>();
             Assert.True(m.IsDiagonalRelation());
         }
+
         [Fact]
         public void IsAntiDiagonalRelation()
         {
@@ -267,6 +278,7 @@ namespace BinaryRelationsTests
             }.Cast<int, bool>();
             Assert.True(m.IsAntiDiagonalRelation());
         }
+
         [Fact]
         public void Product()
         {
@@ -293,12 +305,14 @@ namespace BinaryRelationsTests
             }.Cast<int, bool>();
             Assert.Equal(expected, m1.Product(m2));
         }
+
         [Fact]
         public void ComplementationReverseEqualsReverseComplementation()
         {
             var m1 = RandomExtensions.AllocateRandomSquareMatrix(10).Cast<double, bool>();
             Assert.Equal(m1.Complementation().Reverse(), m1.Reverse().Complementation());
         }
+
         [Fact]
         public void IsFullRelation()
         {
