@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29209.62
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BinaryRelationsTests", "BinaryRelationsTests\BinaryRelationsTests.csproj", "{D018D01A-CC85-4307-982D-995FB37DA79A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BinaryRelations", "BinaryRelations\BinaryRelations.csproj", "{5F3172D9-989B-4878-A995-CF3E699B0842}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D018D01A-CC85-4307-982D-995FB37DA79A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D018D01A-CC85-4307-982D-995FB37DA79A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D018D01A-CC85-4307-982D-995FB37DA79A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D018D01A-CC85-4307-982D-995FB37DA79A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5F3172D9-989B-4878-A995-CF3E699B0842}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5F3172D9-989B-4878-A995-CF3E699B0842}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5F3172D9-989B-4878-A995-CF3E699B0842}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5F3172D9-989B-4878-A995-CF3E699B0842}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E1B1F1B2-A438-4BE1-83B5-925368D4C23D}
+	EndGlobalSection
+EndGlobal
