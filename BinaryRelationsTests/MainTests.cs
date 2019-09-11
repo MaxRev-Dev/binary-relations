@@ -34,7 +34,7 @@ namespace BinaryRelationsTests
                 {66, 81, 96},
                 {102, 126, 150}
             };
-            Assert.Equal(expected.PrintThrought(mock), MatrixExtensions.Multiply(m1, m2).PrintThrought(mock));
+            Assert.Equal(expected.PrintThrough(mock), MatrixExtensions.Multiply(m1, m2).PrintThrough(mock));
         }
 
         [Fact]

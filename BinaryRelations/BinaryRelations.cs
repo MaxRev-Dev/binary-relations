@@ -335,7 +335,7 @@ namespace MaxRev.Extensions.Binary
         /// <param name="a1"></param>
         /// <param name="writer"></param>
         /// <returns></returns>
-        public static T[,] PrintThrought<T>(this T[,] a1, TextWriter writer = default)
+        public static T[,] PrintThrough<T>(this T[,] a1, TextWriter writer = default)
         {
             ThrowIfNull(a1);
             if (writer == default) writer = Console.Out;
