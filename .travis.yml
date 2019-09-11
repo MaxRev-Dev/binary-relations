@@ -1,0 +1,6 @@
+language: csharp
+solution: BinaryRelations.sln
+dotnet: 2.2.402
+script:
+ - dotnet restore
+ - dotnet test BinaryRelationsTests/BinaryRelationsTests.csproj
