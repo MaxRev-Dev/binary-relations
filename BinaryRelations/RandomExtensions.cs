@@ -5,7 +5,7 @@ namespace MaxRev.Extensions.Matrix
     public static class RandomExtensions
     {
         public static int LowRandBounds = 0;
-        public static int MaxRandBounds = 1;
+        public static int MaxRandBounds = 100;
         /// <summary>
         /// Normalizes float point output of matrix randomizer. Default is 1.0 / 100
         /// </summary>
@@ -26,7 +26,7 @@ namespace MaxRev.Extensions.Matrix
         {
             for (int i = 0; i < array.GetLength(0); i++)
             {
-                array[i] = _rand.Next(LowRandBounds, MaxRandBounds);
+                array[i] = _rand.Next(LowRandBounds, MaxRandBounds) * Normalizer;
             }
         }
 
