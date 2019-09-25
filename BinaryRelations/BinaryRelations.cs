@@ -431,7 +431,7 @@ namespace MaxRev.Extensions.Binary
 
             return result;
         }
-        
+
         #endregion
 
         #region Relation properties check
@@ -593,8 +593,9 @@ namespace MaxRev.Extensions.Binary
             {
                 for (int j = 0; j < length; j++)
                 {
-                    if (i != j && matrix1[i, j] == matrix1[j, i])
-                        return false;
+                    if (i != j && matrix1[i, j])
+                        if (matrix1[j, i])
+                            return false;
                 }
             }
 

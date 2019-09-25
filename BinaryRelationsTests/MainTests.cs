@@ -376,7 +376,7 @@ namespace BinaryRelationsTests
                 {1, 0, 0},
                 {1, 0, 0},
             }.Cast<int, bool>();
-            Assert.False(m.IsAsymmetric());
+            Assert.True(m.IsAsymmetric());
             // it also must be anti-reflective
             Assert.True(m.IsAntiReflexive());
         }
@@ -453,7 +453,7 @@ namespace BinaryRelationsTests
             }.Cast<int, bool>();
             Assert.Equal(expected, m.TransitiveClosure());
         }
-        
+
         [Fact]
         public void ReflexiveClosure()
         {
@@ -472,8 +472,8 @@ namespace BinaryRelationsTests
                 {0, 0, 0, 1}
             }.Cast<int, bool>();
             Assert.Equal(expected, m.ReflexiveClosure());
-        } 
-        
+        }
+
         [Fact]
         public void SymmetricClosure()
         {
