@@ -2,6 +2,7 @@ using MaxRev.Extensions.Matrix;
 using MaxRev.Extensions.Binary;
 using Xunit;
 using Xunit.Abstractions;
+using Xunit.Sdk;
 
 namespace BinaryRelationsTests
 {
@@ -34,7 +35,7 @@ namespace BinaryRelationsTests
                 {66, 81, 96},
                 {102, 126, 150}
             };
-            Assert.Equal(expected.PrintThrough(mock), MatrixExtensions.Multiply(m1, m2).PrintThrough(mock));
+            Assert.Equal(expected.PrintThrough(mock), m1.Multiply(m2).PrintThrough(mock));
         }
 
         [Fact]
@@ -82,7 +83,7 @@ namespace BinaryRelationsTests
                 {0, 0, 0},
                 {0, 0, 0}
             };
-            Assert.Equal(expected, MatrixExtensions.Subtract(m1, m2));
+            Assert.Equal(expected, m1.Subtract(m2));
         }
 
         [Fact]
@@ -254,32 +255,6 @@ namespace BinaryRelationsTests
         }
 
         [Fact]
-        public void IsDiagonalRelation()
-        {
-            var m = new[,]
-            {
-                {1, 0, 0, 0},
-                {0, 1, 0, 0},
-                {0, 0, 1, 0},
-                {0, 0, 0, 1}
-            }.Cast<int, bool>();
-            Assert.True(m.IsDiagonalRelation());
-        }
-
-        [Fact]
-        public void IsAntiDiagonalRelation()
-        {
-            var m = new[,]
-            {
-                {0, 1, 1, 1},
-                {1, 0, 1, 1},
-                {1, 1, 0, 1},
-                {1, 1, 1, 0}
-            }.Cast<int, bool>();
-            Assert.True(m.IsAntiDiagonalRelation());
-        }
-
-        [Fact]
         public void Product()
         {
             var m1 = new[,]
@@ -325,6 +300,158 @@ namespace BinaryRelationsTests
             }.Cast<int, bool>();
 
             Assert.True(m1.IsFullRelation());
+        }
+
+        [Fact]
+        public void IsDiagonalRelation()
+        {
+            var m = new[,]
+            {
+                {1, 0, 0, 0},
+                {0, 1, 0, 0},
+                {0, 0, 1, 0},
+                {0, 0, 0, 1}
+            }.Cast<int, bool>();
+            Assert.True(m.IsDiagonalRelation());
+        }
+
+        [Fact]
+        public void IsAntiDiagonalRelation()
+        {
+            var m = new[,]
+            {
+                {0, 1, 1, 1},
+                {1, 0, 1, 1},
+                {1, 1, 0, 1},
+                {1, 1, 1, 0}
+            }.Cast<int, bool>();
+            Assert.True(m.IsAntiDiagonalRelation());
+        }
+
+        [Fact]
+        public void IsReflective()
+        {
+            var m = new[,]
+            {
+                {1, 0, 0, 1},
+                {0, 1, 0, 1},
+                {0, 0, 1, 0},
+                {1, 1, 0, 1}
+            }.Cast<int, bool>();
+            Assert.True(m.IsReflexive());
+        }
+
+        [Fact]
+        public void IsAntiReflective()
+        {
+            var m = new[,]
+            {
+                {0, 0, 0, 1},
+                {0, 0, 0, 1},
+                {0, 0, 0, 0},
+                {1, 1, 0, 0}
+            }.Cast<int, bool>();
+            Assert.True(m.IsAntiReflexive());
+        }
+
+        [Fact]
+        public void IsSymmetric()
+        {
+            var m = new[,]
+            {
+                {1, 1, 0, 1},
+                {1, 0, 0, 1},
+                {0, 0, 1, 0},
+                {1, 1, 0, 0}
+            }.Cast<int, bool>();
+            Assert.True(m.IsSymmetric());
+        }
+
+        [Fact]
+        public void IsAsymmetric()
+        {
+            var m = new[,]
+            {
+                {0, 0, 0},
+                {1, 0, 0},
+                {1, 0, 0},
+            }.Cast<int, bool>();
+            Assert.False(m.IsAsymmetric());
+            // it also must be anti-reflective
+            Assert.True(m.IsAntiReflexive());
+        }
+
+        [Fact]
+        public void IsAntiSymmetric()
+        {
+            var m = new[,]
+            {
+                {1, 0, 0},
+                {0, 0, 1},
+                {1, 0, 1}
+            }.Cast<int, bool>();
+            Assert.False(m.IsAntiSymmetric());
+            m = new[,]
+            {
+                {1, 0, 0},
+                {1, 1, 0},
+                {1, 1, 1}
+            }.Cast<int, bool>();
+            Assert.True(m.IsAntiSymmetric());
+            Assert.True(m.Reverse().IsAntiSymmetric());
+        }
+
+        [Fact(Skip = "Acyclic method is not ready")]
+        public void IsAcyclic()
+        {
+            var m = new[,]
+            {
+                {0, 1, 0},
+                {1, 0, 1},
+                {0, 1, 0}
+            }.Cast<int, bool>();
+
+            // Assert.True(m.IsAcyclic());
+            Assert.True(m.IsAsymmetric());
+
+            // todo: matrix for this branch
+            if (m.IsAntiReflexive() && m.IsTransitive())
+                Assert.True(m.IsAsymmetric());
+        }
+
+        [Fact]
+        public void IsTransitive()
+        {
+            var m = new[,]
+            {
+                {1, 0, 0, 1},
+                {1, 0, 1, 0},
+                {0, 1, 1, 0},
+                {1, 0, 0, 1}
+            }.Cast<int, bool>();
+            Assert.False(m.Product(m).IsEqualTo(m));
+            Assert.False(m.IsTransitive());
+            Assert.True(m.TransitiveClosure().IsTransitive());
+        }
+
+        [Fact]
+        public void TransitiveClosure()
+        {
+            var m = new[,]
+            {
+                {1, 1, 0, 1},
+                {0, 1, 1, 0},
+                {0, 0, 1, 1},
+                {0, 0, 0, 1}
+            }.Cast<int, bool>();
+            var expected = new[,]
+            {
+                {1, 1, 1, 1},
+                {0, 1, 1, 1},
+                {0, 0, 1, 1},
+                {0, 0, 0, 1}
+            }.Cast<int, bool>();
+            Assert.Equal(expected, m.TransitiveClosure());
         }
     }
 }
