@@ -13,10 +13,22 @@ Provides a bunch of extension methods for binary matrices including:
 	- Complementation
 	- Dual
 	- Narrowing
-	Matrix type check
+	- TransitiveClosure
+	- ReflexiveClosure
+	- SymmetricClosure
+	Matrix properties check
 	- IsFullRelation
 	- IsAntiDiagonalRelation
 	- IsDiagonalRelation
+	- IsReflexive
+	- IsAntireflexive
+	- IsSymmetric
+	- IsAsymmetric
+	- IsAntisymmetric
+	- IsTransitive
+	- IsNonTransitive
+	- IsNegativeTransitive
+		and more ...
 	Helpers
 	- Cast<R,T>
 	- PrintThrough<T>
