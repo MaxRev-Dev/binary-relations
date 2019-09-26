@@ -43,22 +43,5 @@ namespace MaxRev.Extensions.Matrix
             Randomize(array);
             return array;
         }
-
-        public static T[,] Fill<T>(this T[,] array, T value)
-        {
-            if (array == null) throw new ArgumentNullException(nameof(array));
-
-            var length = array.GetLength(0);
-
-            for (int i = 0; i < length; i++)
-            {
-                for (int j = 0; j < length; j++)
-                {
-                    array[i, j] = value;
-                }
-            }
-
-            return array;
-        }
     }
 }

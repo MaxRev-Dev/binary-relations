@@ -16,8 +16,9 @@ Provides a bunch of extension methods for binary matrices including:
 	- TransitiveClosure
 	- ReflexiveClosure
 	- SymmetricClosure
+	- GetDiagonalRelation - a diagonal matrix 
 	Matrix properties check
-	- IsFullRelation
+	- IsTotalRelation (full relation)
 	- IsAntiDiagonalRelation
 	- IsDiagonalRelation
 	- IsReflexive
@@ -28,10 +29,18 @@ Provides a bunch of extension methods for binary matrices including:
 	- IsTransitive
 	- IsNonTransitive
 	- IsNegativeTransitive
-		and more ...
-	Helpers
+	- IsAcyclic
+	- IsConnex
+		and derivative methods ...
+	Extremums
+	- HasMaximum() <-> HasMinimum()
+	- HasMajorants() <-> HasMinorants()
+		and corresponding getters ...  
+	Helpers (for one and two dimentional arrays)
 	- Cast<R,T>
+	- Fill<T>(T value)
 	- PrintThrough<T>
+	- IsReferenceSequenceEqualTo<T>(T[] array)
 
 ## Matrix extensions 
 	For arrays, vectors and numbers

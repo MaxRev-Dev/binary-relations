@@ -7,6 +7,41 @@ namespace MaxRev.Extensions.Matrix
 {
     public static class MatrixExtensions
     {
+        #region Fill
+
+        public static T[] Fill<T>(this T[] array, T value)
+        {
+            if (array == null) throw new ArgumentNullException(nameof(array));
+
+            var length = array.GetLength(0);
+
+            for (int i = 0; i < length; i++)
+            {
+                array[i] = value;
+            }
+
+            return array;
+        }
+
+        public static T[,] Fill<T>(this T[,] array, T value)
+        {
+            if (array == null) throw new ArgumentNullException(nameof(array));
+
+            var length = array.GetLength(0);
+
+            for (int i = 0; i < length; i++)
+            {
+                for (int j = 0; j < length; j++)
+                {
+                    array[i, j] = value;
+                }
+            }
+
+            return array;
+        }
+
+        #endregion
+
         #region Coll & Row 
 
         public static T[] GetRow<T>(this T[,] matrix, in int row)
@@ -481,6 +516,23 @@ namespace MaxRev.Extensions.Matrix
                 }
 
                 Console.WriteLine();
+            }
+        }
+        public static void Print<T>(this T[] arr, int floatTolerance = 5)
+        {
+            var a = arr.GetLength(0);
+            for (int i = 0; i < a; i++)
+            {
+                string fx = default;
+                if (arr[i] is float f)
+                    fx = f.ToString("f" + floatTolerance);
+                if (arr[i] is double d)
+                    fx = d.ToString("f" + floatTolerance);
+                if (arr[i] is decimal dc)
+                    fx = dc.ToString("f" + floatTolerance);
+                if (fx == default) fx = arr[i].ToString();
+                Console.Write(fx);
+                Console.Write(new string(' ', 1));
             }
         }
 

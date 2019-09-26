@@ -2,9 +2,9 @@ using System.IO;
 using System.Text;
 using Xunit.Abstractions;
 
-namespace BinaryRelationsTests
+namespace BinaryRelationsTests.Helpers
 {
-    class MockTextWriter : TextWriter
+    public class MockTextWriter : TextWriter
     {
         private readonly ITestOutputHelper _output;
 
@@ -14,7 +14,7 @@ namespace BinaryRelationsTests
             _buffer = new StringBuilder();
         }
         public override Encoding Encoding => Encoding.UTF8;
-        private StringBuilder _buffer;
+        private readonly StringBuilder _buffer;
         public override void WriteLine(string value)
         {
             string t = default;
