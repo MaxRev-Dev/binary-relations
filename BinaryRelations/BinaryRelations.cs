@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using MaxRev.Extensions.Matrix;
@@ -26,6 +27,27 @@ namespace MaxRev.Extensions.Binary
             }
 
             return matrix1;
+        }
+        /// <summary>
+        /// Converts elements of one dimensional array from <see cref="R"/> to <see cref="T"/> 
+        /// </summary>
+        /// <typeparam name="R">convert from</typeparam>
+        /// <typeparam name="T">convert to</typeparam>
+        /// <param name="array"></param>
+        /// <returns></returns>
+        public static T[] Cast<R, T>(this R[] array)
+        {
+            ThrowIfNull(array);
+
+            var length = array.GetLength(0);
+            var result = new T[length];
+
+            for (int i = 0; i < length; i++)
+            {
+                result[i] = (T)Convert.ChangeType(array[i], typeof(T));
+            }
+
+            return result;
         }
         /// <summary>
         /// Converts elements of two dimensional array from <see cref="R"/> to <see cref="T"/> 
@@ -434,6 +456,106 @@ namespace MaxRev.Extensions.Binary
 
         #endregion
 
+        #region Extremums
+
+        public static bool HasMaximum(this bool[,] matrix1) => GetMaximums(matrix1).Any();
+        public static bool HasMinimum(this bool[,] matrix1) => GetMinimums(matrix1).Any();
+        public static bool HasMajorant(this bool[,] matrix1) => GetMajorants(matrix1).Any();
+        public static bool HasMinorant(this bool[,] matrix1) => GetMinorants(matrix1).Any();
+
+        public static IEnumerable<int> GetMaximums(this bool[,] matrix1)
+        {
+            ThrowIfNull_NotQuad(matrix1);
+
+            var length = matrix1.GetLength(0);
+            for (int i = 0; i < length; i++)
+            {
+                var notFound = false;
+
+                for (int j = 0; j < length; j++)
+                {
+                    if (!matrix1[i, j])
+                    {
+                        notFound = true;
+                        break;
+                    }
+                }
+
+                if (!notFound)
+                    yield return i;
+            }
+        }
+
+        public static IEnumerable<int> GetMinimums(this bool[,] matrix1)
+        {
+            ThrowIfNull_NotQuad(matrix1);
+
+            var length = matrix1.GetLength(0);
+            for (int i = 0; i < length; i++)
+            {
+                var notFound = false;
+
+                for (int j = 0; j < length; j++)
+                {
+                    if (!matrix1[j, i])
+                    {
+                        notFound = true;
+                        break;
+                    }
+                }
+
+                if (!notFound)
+                    yield return i;
+            }
+        }
+
+        public static IEnumerable<int> GetMajorants(this bool[,] matrix1)
+        {
+            ThrowIfNull_NotQuad(matrix1);
+
+            var length = matrix1.GetLength(0);
+            for (int i = 0; i < length; i++)
+            {
+                var notFound = false;
+
+                for (int j = 0; j < length; j++)
+                {
+                    if (matrix1[j, i])
+                    {
+                        notFound = true;
+                        break;
+                    }
+                }
+
+                if (!notFound)
+                    yield return i;
+            }
+        }
+
+        public static IEnumerable<int> GetMinorants(this bool[,] matrix1)
+        {
+            ThrowIfNull_NotQuad(matrix1);
+
+            var length = matrix1.GetLength(0);
+            for (int i = 0; i < length; i++)
+            {
+                var notFound = false;
+                for (int j = 0; j < length; j++)
+                {
+                    if (matrix1[i, j])
+                    {
+                        notFound = true;
+                        break;
+                    }
+                }
+
+                if (!notFound)
+                    yield return i;
+            }
+        }
+
+        #endregion
+
         #region Relation properties check
 
         /// <summary>
@@ -533,7 +655,7 @@ namespace MaxRev.Extensions.Binary
         }
 
         /// <summary>
-        /// True if it is a reflexive reduction of a binary relation 
+        /// True if it is a ir-reflexive binary relation 
         /// </summary>
         /// <param name="matrix1"></param>
         /// <returns></returns>
@@ -653,7 +775,7 @@ namespace MaxRev.Extensions.Binary
         }
 
         /// <summary>
-        /// Is this matrix is a negative transitive relation
+        /// Is this matrix is a negative transitive relation.
         /// </summary>
         /// <param name="matrix1"></param>
         /// <returns></returns>
@@ -664,22 +786,55 @@ namespace MaxRev.Extensions.Binary
         }
 
         /// <summary>
-        /// Is this matrix is a non transitive relation
+        /// Is this matrix is an acyclic relation
+        /// A binary relation is acyclic if it contains no "cycles": equivalently, its transitive closure is antisymmetric.
         /// </summary>
         /// <param name="matrix1"></param>
         /// <returns></returns>
-        public static bool IsNonTransitive(this bool[,] matrix1)
+        public static bool IsAcyclic(this bool[,] matrix1)
         {
             ThrowIfNull_NotQuad(matrix1);
-            return !matrix1.IsTransitive() && !matrix1.IsNegativeTransitive();
+            var node = 0;
+            var children = GetConnectedEdges(matrix1, node).ToArray();
+            while (!children.Any() || node != matrix1.GetLength(1) - 1)
+            {
+                children = GetConnectedEdges(matrix1, ++node).ToArray();
+            }
+            return !HasCycle(matrix1, node, new HashSet<int>());
+        }
+
+        private static bool HasCycle(in bool[,] matrix1, int node, in HashSet<int> path)
+        {
+            if (path.Contains(node))
+                return true;
+            var current = new HashSet<int>(path) { node };
+
+            foreach (var child in GetConnectedEdges(matrix1, node))
+            {
+                if (HasCycle(matrix1, child, current))
+                    return true;
+            }
+
+            return false;
+        }
+
+        public static IEnumerable<int> GetConnectedEdges(this bool[,] matrix, int node)
+        {
+            if (node < 0 || node >= matrix.GetLength(0))
+                throw new ArgumentOutOfRangeException(nameof(node));
+            var rowLength = matrix.GetLength(1);
+            for (var i = 0; i < rowLength; i++)
+                if (matrix[node, i])
+                    yield return i;
         }
 
         /// <summary>
-        /// Is this matrix is an acyclic relation
+        /// Is this matrix is a connex relation
+        /// <see href="https://www.wikiwand.com/en/Connex_relation"/>
         /// </summary>
         /// <param name="matrix1"></param>
         /// <returns></returns>
-        internal static bool IsAcyclic(this bool[,] matrix1)
+        public static bool IsConnex(this bool[,] matrix1)
         {
             ThrowIfNull_NotQuad(matrix1);
 
@@ -689,11 +844,10 @@ namespace MaxRev.Extensions.Binary
             {
                 for (int j = 0; j < length; j++)
                 {
-                    // TODO : acyclic algorithm
-                    for (int k = 0; k < length; k++)
+                    if (i != j && !(matrix1[i, j] || matrix1[j, i] ||
+                                    matrix1[i, j] && matrix1[j, i]))
                     {
-                        if (matrix1[i, k] && matrix1[k, j])
-                            return false;
+                        return false;
                     }
                 }
             }
@@ -701,40 +855,18 @@ namespace MaxRev.Extensions.Binary
             return true;
         }
 
-        /// <summary>
-        /// Is this matrix is a connex relation
-        /// </summary>
-        /// <param name="matrix1"></param>
-        /// <returns></returns>
-        public static bool IsConnex(this bool[,] matrix1)
-        {
-            ThrowIfNull_NotQuad(matrix1);
-
-            throw new NotImplementedException();
-        }
-
         #region Derived rules
 
         /// <summary>
-        /// Relation is <see cref="IsAntiReflexive"/> and <see cref="IsAntiSymmetric"/> 
+        /// Is this matrix is a non transitive relation.
+        /// <para>Relation is NOT <see cref="IsTransitive"/> and NOT <see cref="IsNegativeTransitive"/> </para>
         /// </summary>
         /// <param name="matrix1"></param>
         /// <returns></returns>
-        public static bool IsDominating(this bool[,] matrix1)
+        public static bool IsNonTransitive(this bool[,] matrix1)
         {
             ThrowIfNull_NotQuad(matrix1);
-            return matrix1.IsAntiReflexive() && matrix1.IsAntiSymmetric();
-        }
-
-        /// <summary>
-        /// Preorder or quasiorder. Relation is NOT <see cref="IsReflexive"/> and NOT <see cref="IsTransitive"/> 
-        /// </summary>
-        /// <param name="matrix1"></param>
-        /// <returns></returns>
-        public static bool IsQuaziOrder(this bool[,] matrix1)
-        {
-            ThrowIfNull_NotQuad(matrix1);
-            return matrix1.IsReflexive() && matrix1.IsTransitive();
+            return !matrix1.IsTransitive() && !matrix1.IsNegativeTransitive();
         }
 
         /// <summary>
@@ -790,6 +922,105 @@ namespace MaxRev.Extensions.Binary
         {
             ThrowIfNull_NotQuad(matrix1);
             return matrix1.IsAntiReflexive() && matrix1.IsAntiSymmetric() && matrix1.IsTransitive();
+        }
+
+        /// <summary>
+        /// Relation is <see cref="IsReflexive"/> and <see cref="IsAntiSymmetric"/> and <see cref="IsTransitive"/> and <see cref="IsConnex"/>
+        /// </summary>
+        /// <param name="matrix1"></param>
+        /// <returns></returns>
+        public static bool IsLinearOrder(this bool[,] matrix1)
+        {
+            ThrowIfNull_NotQuad(matrix1);
+            return matrix1.IsReflexive() && matrix1.IsAntiSymmetric() && matrix1.IsTransitive() && matrix1.IsConnex();
+        }
+
+        /// <summary>
+        /// Relation is <see cref="IsReflexive"/> and <see cref="IsAntiSymmetric"/> and <see cref="IsTransitive"/>
+        /// </summary>
+        /// <param name="matrix1"></param>
+        /// <returns></returns>
+        public static bool IsPartialOrder(this bool[,] matrix1)
+        {
+            ThrowIfNull_NotQuad(matrix1);
+            return matrix1.IsReflexive() && matrix1.IsAntiSymmetric() && matrix1.IsTransitive();
+        }
+
+        /// <summary>
+        /// Relation is <see cref="IsAntiReflexive"/> and <see cref="IsAsymmetric"/> and <see cref="IsTransitive"/>
+        /// </summary>
+        /// <param name="matrix1"></param>
+        /// <returns></returns>
+        public static bool IsStrictPartialOrder(this bool[,] matrix1)
+        {
+            ThrowIfNull_NotQuad(matrix1);
+            return matrix1.IsAntiReflexive() && matrix1.IsAsymmetric() && matrix1.IsTransitive();
+        }
+
+        /// <summary>
+        /// Relation is <see cref="IsAntiReflexive"/> and <see cref="IsAsymmetric"/> and <see cref="IsTransitive"/> and <see cref="IsConnex"/>
+        /// </summary>
+        /// <param name="matrix1"></param>
+        /// <returns></returns>
+        public static bool IsStrictLinearOrder(this bool[,] matrix1)
+        {
+            ThrowIfNull_NotQuad(matrix1);
+            return matrix1.IsAntiReflexive() && matrix1.IsAsymmetric() && matrix1.IsTransitive() && matrix1.IsConnex();
+        }
+
+        /// <summary>
+        /// Relation is <see cref="IsReflexive"/> and <see cref="IsTransitive"/> and <see cref="IsConnex"/> 
+        /// </summary>
+        /// <param name="matrix1"></param>
+        /// <returns></returns>
+        public static bool IsTotalOrder(this bool[,] matrix1)
+        {
+            ThrowIfNull_NotQuad(matrix1);
+            return matrix1.IsReflexive() && matrix1.IsTransitive() && matrix1.IsConnex();
+        }
+
+        /// <summary>
+        /// Preorder or quasiorder. Relation is <see cref="IsReflexive"/> and <see cref="IsTransitive"/> 
+        /// </summary>
+        /// <param name="matrix1"></param>
+        /// <returns></returns>
+        public static bool IsPreOrder(this bool[,] matrix1)
+        {
+            ThrowIfNull_NotQuad(matrix1);
+            return matrix1.IsReflexive() && matrix1.IsTransitive();
+        }
+
+        /// <summary>
+        /// Strict preorder or strict quasiorder. Relation is <see cref="IsAntiReflexive"/> and <see cref="IsTransitive"/> 
+        /// </summary>
+        /// <param name="matrix1"></param>
+        /// <returns></returns>
+        public static bool IsStrictPreOrder(this bool[,] matrix1)
+        {
+            ThrowIfNull_NotQuad(matrix1);
+            return matrix1.IsAntiReflexive() && matrix1.IsTransitive();
+        }
+
+        /// <summary>
+        /// Relation is <see cref="IsAntiReflexive"/> and <see cref="IsAsymmetric"/> 
+        /// </summary>
+        /// <param name="matrix1"></param>
+        /// <returns></returns>
+        public static bool IsTournament(this bool[,] matrix1)
+        {
+            ThrowIfNull_NotQuad(matrix1);
+            return matrix1.IsAntiReflexive() && matrix1.IsAsymmetric();
+        }
+
+        /// <summary>
+        /// Is a finite tolerance relation. Implies that it <see cref="IsReflexive"/> and <see cref="IsSymmetric"/> 
+        /// </summary>
+        /// <param name="matrix1"></param>
+        /// <returns></returns>
+        public static bool IsDependency(this bool[,] matrix1)
+        {
+            ThrowIfNull_NotQuad(matrix1);
+            return matrix1.IsReflexive() && matrix1.IsSymmetric();
         }
 
         #endregion
