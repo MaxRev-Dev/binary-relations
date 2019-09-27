@@ -31,10 +31,10 @@ Provides a bunch of extension methods for binary matrices including:
 	- IsNegativeTransitive
 	- IsAcyclic
 	- IsConnex
-		and derivative methods ...
+		and derived methods ...
 	Extremums
 	- HasMaximum() <-> HasMinimum()
-	- HasMajorants() <-> HasMinorants()
+	- HasMajorant() <-> HasMinorant()
 		and corresponding getters ...  
 	Helpers (for one and two dimentional arrays)
 	- Cast<R,T>
