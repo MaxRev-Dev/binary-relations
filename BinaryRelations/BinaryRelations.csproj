@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -13,6 +13,8 @@
     <PackageTags>binary-relations, maxrev, matrix, matrix-functions, extension-methods, graphs-theory, graphs, matrix-extensions</PackageTags>
     <PackageReleaseNotes>added derived properties</PackageReleaseNotes>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageId>MaxRev.BinaryRelations</PackageId>
+    <Product>MaxRev.BinaryRelations</Product>
   </PropertyGroup>
 
 </Project>
