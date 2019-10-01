@@ -137,6 +137,14 @@ namespace BinaryRelationsTests
         {
             var m = new[,]
             {
+                {0, 1, 0},
+                {0, 0, 1},
+                {0, 0, 0}
+            }.Cast<int, bool>();
+            Assert.True(m.IsAcyclic());
+
+            m = new[,]
+            {
                 {0, 1, 0, 0},
                 {0, 0, 0, 1},
                 {0, 0, 0, 0},

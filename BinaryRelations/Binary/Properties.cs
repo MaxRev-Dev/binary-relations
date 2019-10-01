@@ -245,10 +245,13 @@ namespace MaxRev.Extensions.Binary
         {
             ThrowIfNull_NotQuad(matrix1);
             var node = 0;
+            var lastNode = matrix1.GetLength(1) - 1;
             var children = GetConnectedEdges(matrix1, node).ToArray();
-            while (!children.Any() || node != matrix1.GetLength(1) - 1)
+            while (!children.Any())
             {
-                children = GetConnectedEdges(matrix1, ++node).ToArray();
+                if (node >= lastNode) 
+                    break;
+                children = GetConnectedEdges(matrix1, node++).ToArray();
             }
             return !HasCycle(matrix1, node, new HashSet<int>());
         }
@@ -259,13 +262,8 @@ namespace MaxRev.Extensions.Binary
                 return true;
             var current = new HashSet<int>(path) { node };
 
-            foreach (var child in GetConnectedEdges(matrix1, node))
-            {
-                if (HasCycle(matrix1, child, current))
-                    return true;
-            }
-
-            return false;
+            var shade = matrix1;
+            return GetConnectedEdges(matrix1, node).Any(child => HasCycle(shade, child, current));
         }
 
         /// <summary>
