@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace>MaxRev.Extensions</RootNamespace>
-    <Version>1.1.0</Version>
+    <Version>1.2.0</Version>
     <Authors>MaxRev</Authors>
     <Copyright>MaxRev © 2019</Copyright>
     <Description>Binary relations and matrix extensions library targeting netstandard2.0</Description>

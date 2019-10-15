@@ -145,19 +145,46 @@ namespace BinaryRelationsTests
         {
             var m1 = new[,]
             {
-                {1, 0, 0, 1},
-                {1, 1, 1, 0},
-                {0, 1, 0, 1},
-                {1, 1, 0, 0},
+                {1, 1, 1, 1},
+                {1, 1, 1, 1},
+                {1, 1, 1, 1},
+                {1, 1, 1, 1},
             }.Cast<int, bool>();
             var expected = new[,]
             {
-                {0, 0, 0, 0},
-                {0, 1, 1, 0},
-                {0, 1, 0, 0},
-                {0, 0, 0, 0},
+                {1, 1, 1, 1},
+                {1, 0, 0, 1},
+                {1, 0, 0, 1},
+                {1, 1, 1, 1},
             }.Cast<int, bool>();
-            Assert.Equal(expected, m1.Narrowing(2, 3));
+            Assert.Equal(expected, m1.Narrowing(1, 4));
+
+            expected = new[,]
+            {
+                {1, 1, 1, 1},
+                {1, 1, 1, 1},
+                {1, 1, 0, 0},
+                {1, 1, 0, 0},
+            }.Cast<int, bool>();
+            Assert.Equal(expected, m1.Narrowing(1, 2));
+
+            expected = new[,]
+            {
+                {1, 1, 1, 1},
+                {1, 0, 1, 1},
+                {1, 1, 1, 1},
+                {1, 1, 1, 1},
+            }.Cast<int, bool>();
+            Assert.Equal(expected, m1.Narrowing(1, 3, 4));
+
+            expected = new[,]
+            {
+                {1, 1, 1, 1},
+                {1, 0, 0, 0},
+                {1, 0, 0, 0},
+                {1, 0, 0, 0},
+            }.Cast<int, bool>();
+            Assert.Equal(expected, m1.Narrowing(1));
         }
 
         [Fact]
