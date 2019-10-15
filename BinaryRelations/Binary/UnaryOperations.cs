@@ -80,14 +80,15 @@ namespace MaxRev.Extensions.Binary
             if (x == null) throw new ArgumentNullException(nameof(x));
             ThrowIfNull_NotQuad(matrix1);
             var length = matrix1.GetLength(0);
-            var result = new bool[length, length];
+            var result = (bool[,])matrix1.Clone(); //new bool[length, length];
             x = x.Select(p => --p).ToArray();
+             
             for (int i = 0; i < length; i++)
             {
                 for (int j = 0; j < length; j++)
                 {
-                    if (x.Contains(i) || x.Contains(j))
-                        result[i, j] = matrix1[i, j];
+                    if (!x.Contains(i) || !x.Contains(j))
+                        result[i, j] = false;
                 }
             }
 

@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace>MaxRev.Extensions</RootNamespace>
-    <Version>1.2.0</Version>
+    <Version>1.2.2</Version>
     <Authors>MaxRev</Authors>
     <Copyright>MaxRev © 2019</Copyright>
     <Description>Binary relations and matrix extensions library targeting netstandard2.0</Description>
@@ -11,7 +11,7 @@
     <RepositoryUrl>https://github.com/MaxRev-Dev/binary-relations</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>binary-relations, maxrev, matrix, matrix-functions, extension-methods, graphs-theory, graphs, matrix-extensions</PackageTags>
-    <PackageReleaseNotes>added derived properties</PackageReleaseNotes>
+    <PackageReleaseNotes>fixed narrowing operation</PackageReleaseNotes>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageId>MaxRev.BinaryRelations</PackageId>
     <Product>MaxRev.BinaryRelations</Product>
