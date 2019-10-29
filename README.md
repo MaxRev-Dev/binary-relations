@@ -60,3 +60,5 @@ Provides a bunch of extension methods for binary matrices including:
 	- Randomize
 	- AllocateRandomSquareMatrix
 	- AllocateRandomVector
+	- CartesianProduct
+	- CartesianProductDistinctPairs

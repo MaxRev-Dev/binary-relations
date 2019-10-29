@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Runtime.CompilerServices;
 
@@ -544,6 +545,46 @@ namespace MaxRev.Extensions.Matrix
             if (array1.GetLength(0) != array2.GetLength(0))
             {
                 throw new ArgumentException("matrices sizes are not equal");
+            }
+        }
+
+        #endregion
+
+        #region Combinatorics
+
+        public static IEnumerable<IEnumerable<T>> CartesianProduct<T>(this IEnumerable<IEnumerable<T>> sequences)
+        {
+            IEnumerable<IEnumerable<T>> emptyProduct = new[] { Enumerable.Empty<T>() };
+            return sequences.Aggregate(
+                emptyProduct,
+                (accumulator, sequence) =>
+                    from acc in accumulator
+                    from item in sequence
+                    select acc.Concat(new[] { item }));
+        }
+
+        public static IEnumerable<IEnumerable<IEnumerable<int>>> CartesianProductDistinctPairs(int size, int start = 1)
+        {
+            var range = Enumerable.Range(start, size).ToArray();
+            for (var i = 1; i <= size; i++)
+                yield return Permutations(range, i);
+        }
+
+        public static IEnumerable<IEnumerable<T>> Permutations<T>(IEnumerable<T> array, int elementsInArray)
+        {
+            var range = array as T[] ?? array.ToArray();
+            var i = 1;
+            foreach (var item in range)
+            {
+                if (elementsInArray == 1)
+                {
+                    yield return new[] { item };
+                }
+                else
+                {
+                    foreach (var result in Permutations(range.Skip(i++), elementsInArray - 1))
+                        yield return new[] { item }.Concat(result);
+                }
             }
         }
 
