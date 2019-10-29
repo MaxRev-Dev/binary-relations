@@ -1,3 +1,5 @@
+using System;
+using System.Linq;
 using BinaryRelationsTests.Helpers;
 using MaxRev.Extensions.Binary;
 using MaxRev.Extensions.Matrix;
@@ -152,39 +154,57 @@ namespace BinaryRelationsTests
             }.Cast<int, bool>();
             var expected = new[,]
             {
-                {1, 0, 0, 1},
-                {0, 0, 0, 0},
-                {0, 0, 0, 0},
-                {1, 0, 0, 1},
+                {1, 1},
+                {1, 1},
             }.Cast<int, bool>();
             Assert.Equal(expected, m1.Narrowing(1, 4));
-
-            expected = new[,]
-            {
-                {1, 1, 0, 0},
-                {1, 1, 0, 0},
-                {0, 0, 0, 0},
-                {0, 0, 0, 0},
-            }.Cast<int, bool>();
             Assert.Equal(expected, m1.Narrowing(1, 2));
+            Assert.Equal(expected, m1.Narrowing(3, 4));
 
             expected = new[,]
             {
-                {1, 0, 1, 1},
-                {0, 0, 0, 0},
-                {1, 0, 1, 1},
-                {1, 0, 1, 1},
+                {1, 1, 1},
+                {1, 1, 1},
+                {1, 1, 1},
             }.Cast<int, bool>();
             Assert.Equal(expected, m1.Narrowing(1, 3, 4));
 
             expected = new[,]
             {
-                {1, 0, 0, 0},
-                {0, 0, 0, 0},
-                {0, 0, 0, 0},
-                {0, 0, 0, 0},
+                {1},
             }.Cast<int, bool>();
             Assert.Equal(expected, m1.Narrowing(1));
+
+            m1 = new[,]
+            {
+                {1, 1, 0, 1},
+                {1, 1, 1, 1},
+                {1, 1, 1, 1},
+                {0, 1, 1, 0},
+            }.Cast<int, bool>();
+
+            expected = new[,]
+            {
+                {1, 0, 1},
+                {1, 1, 1},
+                {0, 1, 0},
+            }.Cast<int, bool>();
+            Assert.Equal(expected, m1.Narrowing(1, 3, 4));
+
+            m1 = new[,]
+            {
+                {1, 1, 0, 1},
+                {1, 1, 1, 1},
+                {1, 1, 1, 1},
+                {0, 1, 1, 0},
+            }.Cast<int, bool>();
+
+            expected = new[,]
+            {
+                { 1, 1},
+                { 1, 0},
+            }.Cast<int, bool>();
+            Assert.Equal(expected, m1.Narrowing(3, 4));
         }
 
         [Fact]

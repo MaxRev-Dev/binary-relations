@@ -1,3 +1,4 @@
+using System.Linq;
 using BinaryRelationsTests.Helpers;
 using MaxRev.Extensions.Binary;
 using Xunit;
@@ -9,6 +10,12 @@ namespace BinaryRelationsTests
     {
         public ExtremumsTests(ITestOutputHelper output) : base(output)
         {
+        }
+
+        [Fact]
+        public void ExtremumTest0()
+        {
+            Assert.True(new[,] { { true } }.GetMaximums().Any());
         }
 
         [Fact]
