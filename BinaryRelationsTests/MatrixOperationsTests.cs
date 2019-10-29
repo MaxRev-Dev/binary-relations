@@ -1,8 +1,7 @@
-using System.Collections.Generic;
-using System.Linq;
 using BinaryRelationsTests.Helpers;
 using MaxRev.Extensions.Binary;
 using MaxRev.Extensions.Matrix;
+using System.Linq;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -109,7 +108,7 @@ namespace BinaryRelationsTests
         public void CartesianProductDistinctPairs()
         {
             var expected = new[] {
-                new[]
+                new []
                 {
                     new[] {1},
                     new[] {2},
@@ -117,7 +116,7 @@ namespace BinaryRelationsTests
                     new[] {4},
                     new[] {5},
                 },
-                new[]
+                new []
                 {
                     new[] {1, 2},
                     new[] {1, 3},
@@ -130,7 +129,7 @@ namespace BinaryRelationsTests
                     new[] {3, 5},
                     new[] {4, 5},
                 },
-                new[]
+                new []
                 {
                     new[] {1, 2, 3},
                     new[] {1, 2, 4},
@@ -143,7 +142,7 @@ namespace BinaryRelationsTests
                     new[] {2, 4, 5},
                     new[] {3, 4, 5},
                 },
-                new[]
+                new []
                 {
                     new[] {1, 2, 3, 4},
                     new[] {1, 2, 3, 5},

@@ -70,7 +70,7 @@ namespace MaxRev.Extensions.Binary
         }
 
         /// <summary>
-        /// Narrows matrix to region defined by the set of X..Xi..Xn. Indexes are starting from 1 
+        /// Narrows matrix to the region defined by the set of X..Xi..Xn. Indexes are starting from 1 and will be sorted
         /// </summary>
         /// <param name="matrix1">binary matrix</param>
         /// <param name="x">index [1..n]</param> 
@@ -80,7 +80,7 @@ namespace MaxRev.Extensions.Binary
             if (x == null) throw new ArgumentNullException(nameof(x));
             ThrowIfNull_NotQuad(matrix1);
             var length = matrix1.GetLength(0);
-            var set = x.Select(p => --p).ToList();
+            var set = x.Select(p => --p).OrderBy(a => a).ToList();  
             var result = new bool[x.Length, x.Length];
 
             for (int i = 0; i < length; i++)
@@ -92,7 +92,33 @@ namespace MaxRev.Extensions.Binary
                 }
             }
 
-            return result; 
+            return result;
+        }
+
+        /// <summary>
+        /// Narrows matrix  to the region defined by the set of X..Xi..Xn, but preserves it's original size. Indexes are starting from 1 and will be sorted
+        /// </summary>
+        /// <param name="matrix1">binary matrix</param>
+        /// <param name="x">index [1..n]</param> 
+        /// <returns>binary matrix</returns>
+        public static bool[,] NarrowingPreserveSize(this bool[,] matrix1, params int[] x)
+        {
+            if (x == null) throw new ArgumentNullException(nameof(x));
+            ThrowIfNull_NotQuad(matrix1);
+            var length = matrix1.GetLength(0);
+            var result = (bool[,])matrix1.Clone();  
+            x = x.Select(p => --p).OrderBy(a => a).ToArray();
+
+            for (int i = 0; i < length; i++)
+            {
+                for (int j = 0; j < length; j++)
+                {
+                    if (!x.Contains(i) || !x.Contains(j))
+                        result[i, j] = false;
+                }
+            }
+
+            return result;
         }
 
         #endregion

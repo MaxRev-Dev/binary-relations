@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace>MaxRev.Extensions</RootNamespace>
-    <Version>1.3.0</Version>
+    <Version>1.3.2</Version>
     <Authors>MaxRev</Authors>
     <Copyright>MaxRev © 2019</Copyright>
     <Description>Binary relations and matrix extensions library targeting netstandard2.0</Description>
@@ -11,10 +11,18 @@
     <RepositoryUrl>https://github.com/MaxRev-Dev/binary-relations</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>binary-relations, maxrev, matrix, matrix-functions, extension-methods, graphs-theory, graphs, matrix-extensions</PackageTags>
-    <PackageReleaseNotes>added cartesian product</PackageReleaseNotes>
+    <PackageReleaseNotes>- added cartesian product
+
+- ordered indexes in narrowing method
+
+- narrowing returns only a specified region (skips empty indexes)
+
+- sorted indexes for narrowing
+    
+- added NarrowingPreserveSize</PackageReleaseNotes>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageId>MaxRev.BinaryRelations</PackageId>
-    <Product>MaxRev.BinaryRelations</Product>
+    <Product>MaxRev.BinaryRelations</Product> 
   </PropertyGroup>
 
 </Project>

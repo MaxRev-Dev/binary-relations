@@ -1,5 +1,3 @@
-using System;
-using System.Linq;
 using BinaryRelationsTests.Helpers;
 using MaxRev.Extensions.Binary;
 using MaxRev.Extensions.Matrix;
@@ -167,7 +165,8 @@ namespace BinaryRelationsTests
                 {1, 1, 1},
                 {1, 1, 1},
             }.Cast<int, bool>();
-            Assert.Equal(expected, m1.Narrowing(1, 3, 4));
+            // this set will be ordered by ascending
+            Assert.Equal(expected, m1.Narrowing(4, 1, 3));
 
             expected = new[,]
             {
@@ -189,7 +188,8 @@ namespace BinaryRelationsTests
                 {1, 1, 1},
                 {0, 1, 0},
             }.Cast<int, bool>();
-            Assert.Equal(expected, m1.Narrowing(1, 3, 4));
+            // this set will be ordered by ascending
+            Assert.Equal(expected, m1.Narrowing(3, 1, 4));
 
             m1 = new[,]
             {
@@ -207,6 +207,52 @@ namespace BinaryRelationsTests
             Assert.Equal(expected, m1.Narrowing(3, 4));
         }
 
+        [Fact]
+        public void NarrowingPreserveSize()
+        {
+            var m1 = new[,]
+            {
+                {1, 1, 1, 1},
+                {1, 1, 1, 1},
+                {1, 1, 1, 1},
+                {1, 1, 1, 1},
+            }.Cast<int, bool>();
+            var expected = new[,]
+            {
+                {1, 0, 0, 1},
+                {0, 0, 0, 0},
+                {0, 0, 0, 0},
+                {1, 0, 0, 1},
+            }.Cast<int, bool>();
+            Assert.Equal(expected, m1.NarrowingPreserveSize(1, 4));
+
+            expected = new[,]
+            {
+                {1, 1, 0, 0},
+                {1, 1, 0, 0},
+                {0, 0, 0, 0},
+                {0, 0, 0, 0},
+            }.Cast<int, bool>();
+            Assert.Equal(expected, m1.NarrowingPreserveSize(1, 2));
+
+            expected = new[,]
+            {
+                {1, 0, 1, 1},
+                {0, 0, 0, 0},
+                {1, 0, 1, 1},
+                {1, 0, 1, 1},
+            }.Cast<int, bool>();
+            Assert.Equal(expected, m1.NarrowingPreserveSize(1, 3, 4));
+
+            expected = new[,]
+            {
+                {1, 0, 0, 0},
+                {0, 0, 0, 0},
+                {0, 0, 0, 0},
+                {0, 0, 0, 0},
+            }.Cast<int, bool>();
+            Assert.Equal(expected, m1.NarrowingPreserveSize(1));
+        }
         [Fact]
         public void Reverse()
         {

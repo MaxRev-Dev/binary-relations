@@ -52,11 +52,10 @@ namespace MaxRev.Extensions.Binary
 
                 for (int j = 0; j < length; j++)
                 {
-                    if (!matrix1[i, j])
-                    {
-                        rulePassing = false;
-                        break;
-                    }
+                    if (matrix1[i, j]) 
+                        continue;
+                    rulePassing = false;
+                    break;
                 }
 
                 if (rulePassing)
@@ -81,11 +80,10 @@ namespace MaxRev.Extensions.Binary
 
                 for (int j = 0; j < length; j++)
                 {
-                    if (!matrix1[j, i])
-                    {
-                        rulePassing = false;
-                        break;
-                    }
+                    if (matrix1[j, i])
+                        continue;
+                    rulePassing = false;
+                    break;
                 }
 
                 if (rulePassing)
@@ -110,11 +108,10 @@ namespace MaxRev.Extensions.Binary
 
                 for (int j = 0; j < length; j++)
                 {
-                    if (matrix1[j, i])
-                    {
-                        rulePassing = false;
-                        break;
-                    }
+                    if (!matrix1[j, i]) 
+                        continue;
+                    rulePassing = false;
+                    break;
                 }
 
                 if (rulePassing)
@@ -139,11 +136,10 @@ namespace MaxRev.Extensions.Binary
 
                 for (int j = 0; j < length; j++)
                 {
-                    if (matrix1[i, j])
-                    {
-                        rulePassing = false;
-                        break;
-                    }
+                    if (!matrix1[i, j]) 
+                        continue;
+                    rulePassing = false;
+                    break;
                 }
 
                 if (rulePassing)

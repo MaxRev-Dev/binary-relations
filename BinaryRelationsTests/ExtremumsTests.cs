@@ -1,6 +1,6 @@
-using System.Linq;
 using BinaryRelationsTests.Helpers;
 using MaxRev.Extensions.Binary;
+using System.Linq;
 using Xunit;
 using Xunit.Abstractions;
 
