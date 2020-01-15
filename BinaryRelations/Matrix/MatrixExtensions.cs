@@ -107,29 +107,32 @@ namespace MaxRev.Extensions.Matrix
 
         public static double[,] Add(this double[,] array1, in double val)
         {
-            return Add<double>(array1, val);
+            return AddImpl(array1, val);
         }
 
         public static float[,] Add(this float[,] array1, in float val)
         {
-            return Add<float>(array1, val);
+            return AddImpl(array1, val);
         }
 
         public static int[,] Add(this int[,] array1, in int val)
         {
-            return Add<int>(array1, val);
+            return AddImpl(array1, val);
         }
 
-        private static T[,] Add<T>(this T[,] array1, in T value)
+        private static T[,] AddImpl<T>(this T[,] array1, in T value)
         {
             int rA = array1.GetLength(0);
             int cA = array1.GetLength(1);
             var r = new T[rA, cA];
+
+            var addOp = AddOp<T>();
+
             for (int i = 0; i < rA; i++)
             {
                 for (int j = 0; j < cA; j++)
                 {
-                    r[i, j] = InlineOperation(array1[i, j], value, (x, y) => Expression.Add(x, y));
+                    r[i, j] = addOp(array1[i, j], value);
                 }
             }
 
@@ -142,29 +145,31 @@ namespace MaxRev.Extensions.Matrix
 
         public static double[,] Add(this double[,] array1, in double[,] vector)
         {
-            return Add<double>(array1, vector);
+            return AddImpl(array1, vector);
         }
 
         public static float[,] Add(this float[,] array1, in float[,] vector)
         {
-            return Add<float>(array1, vector);
+            return AddImpl(array1, vector);
         }
 
         public static int[,] Add(this int[,] array1, in int[,] vector)
         {
-            return Add<int>(array1, vector);
+            return AddImpl(array1, vector);
         }
 
-        private static T[,] Add<T>(this T[,] array1, in T[,] array2)
+        private static T[,] AddImpl<T>(this T[,] array1, in T[,] array2)
         {
             int rA = array1.GetLength(0);
             int cA = array1.GetLength(1);
             var r = new T[rA, cA];
+
+            var addOp = AddOp<T>();
             for (int i = 0; i < rA; i++)
             {
                 for (int j = 0; j < cA; j++)
                 {
-                    r[i, j] = InlineOperation(array1[i, j], array2[i, j], (x, y) => Expression.Add(x, y));
+                    r[i, j] = addOp(array1[i, j], array2[i, j]);
                 }
             }
 
@@ -177,28 +182,29 @@ namespace MaxRev.Extensions.Matrix
 
         public static double[] Add(this double[,] array1, in double[] vector)
         {
-            return Add<double>(array1, vector);
+            return AddImpl(array1, vector);
         }
 
         public static float[] Add(this float[,] array1, in float[] vector)
         {
-            return Add<float>(array1, vector);
+            return AddImpl(array1, vector);
         }
 
         public static int[] Add(this int[,] array1, in int[] vector)
         {
-            return Add<int>(array1, vector);
+            return AddImpl(array1, vector);
         }
 
-        private static T[] Add<T>(this T[,] array1, in T[] vector)
+        private static T[] AddImpl<T>(this T[,] array1, in T[] vector)
         {
             var r = new T[array1.GetLength(0)];
+            var addOp = AddOp<T>();
             for (int i = 0; i < array1.GetLength(0); i++)
             {
                 T temp = default;
                 for (int j = 0; j < array1.GetLength(1); j++)
                 {
-                    temp = InlineOperation(array1[i, j], vector[j], (x, y) => Expression.Add(x, y));
+                    temp = addOp(array1[i, j], vector[j]);
                 }
 
                 r[i] = temp;
@@ -213,29 +219,30 @@ namespace MaxRev.Extensions.Matrix
 
         public static double[,] Subtract(this double[,] array1, in double[,] array2)
         {
-            return Subtract<double>(array1, array2);
+            return SubtractImpl(array1, array2);
         }
 
         public static float[,] Subtract(this float[,] array1, in float[,] array2)
         {
-            return Subtract<float>(array1, array2);
+            return SubtractImpl(array1, array2);
         }
 
         public static int[,] Subtract(this int[,] array1, in int[,] array2)
         {
-            return Subtract<int>(array1, array2);
+            return SubtractImpl(array1, array2);
         }
 
-        private static T[,] Subtract<T>(this T[,] array1, in T[,] array2)
+        private static T[,] SubtractImpl<T>(this T[,] array1, in T[,] array2)
         {
             int rA = array1.GetLength(0);
             int cA = array1.GetLength(1);
             var r = new T[rA, cA];
+            var subtOp = SubtOp<T>();
             for (int i = 0; i < rA; i++)
             {
                 for (int j = 0; j < cA; j++)
                 {
-                    r[i, j] = InlineOperation(array1[i, j], array2[i, j], (x, y) => Expression.Subtract(x, y));
+                    r[i, j] = subtOp(array1[i, j], array2[i, j]);
                 }
             }
 
@@ -248,30 +255,31 @@ namespace MaxRev.Extensions.Matrix
 
         public static double[] Subtract(this double[,] array1, in double[] vector)
         {
-            return Subtract<double>(array1, vector);
+            return SubtractImpl(array1, vector);
         }
 
         public static float[] Subtract(this float[,] array1, in float[] vector)
         {
-            return Subtract<float>(array1, vector);
+            return SubtractImpl(array1, vector);
         }
 
         public static int[] Subtract(this int[,] array1, in int[] vector)
         {
-            return Subtract<int>(array1, vector);
+            return SubtractImpl(array1, vector);
         }
 
-        private static T[] Subtract<T>(this T[,] array1, in T[] vector)
+        private static T[] SubtractImpl<T>(this T[,] array1, in T[] vector)
         {
             int rA = array1.GetLength(0);
             int cA = array1.GetLength(1);
             var r = new T[rA];
+            var subtOp = SubtOp<T>();
             for (int i = 0; i < rA; i++)
             {
                 T temp = default;
                 for (int j = 0; j < cA; j++)
                 {
-                    temp = InlineOperation(array1[i, j], vector[j], (x, y) => Expression.Subtract(x, y));
+                    temp = subtOp(array1[i, j], vector[j]);
                 }
 
                 r[i] = temp;
@@ -286,30 +294,30 @@ namespace MaxRev.Extensions.Matrix
 
         public static double[] Multiply(this double[,] array1, in double[] vector)
         {
-            return Multiply<double>(array1, vector);
+            return MultiplyImpl(array1, vector);
         }
 
         public static float[] Multiply(this float[,] array1, in float[] vector)
         {
-            return Multiply<float>(array1, vector);
+            return MultiplyImpl(array1, vector);
         }
 
         public static int[] Multiply(this int[,] array1, in int[] vector)
         {
-            return Multiply<int>(array1, vector);
+            return MultiplyImpl(array1, vector);
         }
 
-        private static T[] Multiply<T>(this T[,] array1, in T[] vector)
+        private static T[] MultiplyImpl<T>(this T[,] array1, in T[] vector)
         {
             var r = new T[array1.GetLength(0)];
+            var multOp = MultOp<T>();
+            var addOp = AddOp<T>();
             for (int i = 0; i < array1.GetLength(0); i++)
             {
                 T temp = default;
                 for (int j = 0; j < array1.GetLength(1); j++)
                 {
-                    temp = InlineOperation(temp,
-                        InlineOperation(array1[i, j], vector[j], (x, y) => Expression.Multiply(x, y)),
-                        (x, y) => Expression.Add(x, y));
+                    temp = addOp(temp, multOp(array1[i, j], vector[j]));
                 }
 
                 r[i] = temp;
@@ -343,11 +351,12 @@ namespace MaxRev.Extensions.Matrix
             int rA = array1.GetLength(0);
             int cA = array1.GetLength(1);
             var r = new T[rA, cA];
+            var multOp = MultOp<T>();
             for (int i = 0; i < rA; i++)
             {
                 for (int j = 0; j < cA; j++)
                 {
-                    r[i, j] = InlineOperation(array1[i, j], x, (v, v1) => Expression.Multiply(v, v1));
+                    r[i, j] = multOp(array1[i, j], x);
                 }
             }
 
@@ -360,24 +369,28 @@ namespace MaxRev.Extensions.Matrix
 
         public static double[,] MatrixPower(this double[,] array1, in int n)
         {
-            return MatrixPower<double>(array1, n);
+            return MatrixPowerImpl(array1, n);
         }
 
         public static float[,] MatrixPower(this float[,] array1, in int n)
         {
-            return MatrixPower<float>(array1, n);
+            return MatrixPowerImpl(array1, n);
         }
 
         public static int[,] MatrixPower(this int[,] array1, in int n)
         {
-            return MatrixPower<int>(array1, n);
+            return MatrixPowerImpl(array1, n);
         }
 
-        private static T[,] MatrixPower<T>(this T[,] array1, in int n)
+        private static T[,] MatrixPowerImpl<T>(this T[,] array1, int n)
         {
-            if (n == 1) return array1;
-            var r = Multiply(array1, array1);
-            return MatrixPower(r, n - 1);
+            while (true)
+            {
+                if (n == 1) return array1;
+                var r = MultiplyImpl(array1, array1);
+                array1 = r;
+                n -= 1;
+            }
         }
 
         #endregion
@@ -386,33 +399,35 @@ namespace MaxRev.Extensions.Matrix
 
         public static float[,] Multiply(this float[,] array1, in float[,] array2)
         {
-            return Multiply<float>(array1, array2);
+            return MultiplyImpl(array1, array2);
         }
 
         public static double[,] Multiply(this double[,] array1, in double[,] array2)
         {
-            return Multiply<double>(array1, array2);
+            return MultiplyImpl(array1, array2);
         }
 
         public static int[,] Multiply(this int[,] array1, int[,] array2)
         {
-            return Multiply<int>(array1, array2);
+            return MultiplyImpl(array1, array2);
         }
 
-        private static T[,] Multiply<T>(this T[,] array1, in T[,] array2)
+        private static T[,] MultiplyImpl<T>(this T[,] array1, in T[,] array2)
         {
             ThrowIfSizeNotEqual(array1, array2);
             int rA = array1.GetLength(0);
             int cA = array1.GetLength(1);
             var r = new T[rA, cA];
+            var multOp = MultOp<T>();
+            var addOp = AddOp<T>();
             for (int i = 0; i < rA; i++)
             {
                 for (int j = 0; j < cA; j++)
                 {
                     for (int k = 0; k < rA; k++)
                     {
-                        var tmp = InlineOperation(array1[i, k], array2[k, j], (x, y) => Expression.Multiply(x, y));
-                        r[i, j] = InlineOperation(r[i, j], tmp, (x, y) => Expression.Add(x, y));
+                        var tmp = multOp(array1[i, k], array2[k, j]);
+                        r[i, j] = addOp(r[i, j], tmp);
                     }
                 }
             }
@@ -426,20 +441,20 @@ namespace MaxRev.Extensions.Matrix
 
         public static float[,] MultiplyRecursively(this float[,] array1, in float[,] array2)
         {
-            return MultiplyRecursively<float>(array1, array2);
+            return MultiplyRecursivelyImpl(array1, array2);
         }
 
         public static double[,] MultiplyRecursively(this double[,] array1, in double[,] array2)
         {
-            return MultiplyRecursively<double>(array1, array2);
+            return MultiplyRecursivelyImpl(array1, array2);
         }
 
         public static int[,] MultiplyRecursively(this int[,] array1, in int[,] array2)
         {
-            return MultiplyRecursively<int>(array1, array2);
+            return MultiplyRecursivelyImpl(array1, array2);
         }
 
-        private static T[,] MultiplyRecursively<T>(this T[,] array1, in T[,] array2)
+        private static T[,] MultiplyRecursivelyImpl<T>(this T[,] array1, in T[,] array2)
         {
             int rA = array1.GetLength(0);
             int cA = array1.GetLength(1);
@@ -459,8 +474,18 @@ namespace MaxRev.Extensions.Matrix
         {
             if (k < 0)
                 return default;
-            return InlineOperation(InlineOperation(array1[i, k], array2[k, j], (x, y) => Expression.Multiply(x, y)),
-                InnerRecursively(array1, array2, i, j, k - 1), (x, y) => Expression.Add(x, y));
+            var multOp = MultOp<T>();
+            var addOp = AddOp<T>();
+            return InnerRecursivelyCore(array1, array2, multOp, addOp, i, j, k);
+        }
+
+        private static T InnerRecursivelyCore<T>(T[,] array1, T[,] array2,
+            Func<T, T, T> addOp, Func<T, T, T> multOp, in int i, in int j, in int k)
+        {
+            if (k < 0)
+                return default;
+            return addOp(multOp(array1[i, k], array2[k, j]),
+                InnerRecursivelyCore(array1, array2, addOp, multOp, i, j, k - 1));
         }
 
         #endregion
@@ -471,7 +496,24 @@ namespace MaxRev.Extensions.Matrix
             new Dictionary<Type, Dictionary<string, Delegate>>();
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static T InlineOperation<T>(T a, T b, Expression<Func<Expression, Expression, BinaryExpression>> rfunc)
+        private static Func<T, T, T> AddOp<T>()
+        {
+            return InlineOperation<T>((x, y) => Expression.Add(x, y));
+        }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static Func<T, T, T> SubtOp<T>()
+        {
+            return InlineOperation<T>((x, y) => Expression.Subtract(x, y));
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static Func<T, T, T> MultOp<T>()
+        {
+            return InlineOperation<T>((x, y) => Expression.Multiply(x, y));
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static Func<T, T, T> InlineOperation<T>(Expression<Func<Expression, Expression, BinaryExpression>> rfunc)
         {
             var be = ((MethodCallExpression)rfunc.Body).Method.Name;
             var func = rfunc.Compile();
@@ -490,7 +532,7 @@ namespace MaxRev.Extensions.Matrix
             {
                 mult = (Func<T, T, T>)tmp[be];
             }
-            return mult(a, b);
+            return mult;
         }
         #endregion
 
