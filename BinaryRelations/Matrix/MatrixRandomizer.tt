@@ -12,7 +12,7 @@ namespace MaxRev.Extensions.Matrix
     { 
         private readonly Random _random = new Random();
         private static MatrixRandomizer _instance;
-        public static MatrixRandomizer Default => _instance ??= new MatrixRandomizer();
+        public static MatrixRandomizer Default => _instance ?? (_instance = new MatrixRandomizer());
 
         public int LowRandBounds { get; set; } = 0;
         public int MaxRandBounds { get; set; } = 100;

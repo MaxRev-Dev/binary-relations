@@ -16,8 +16,7 @@
 - vector cross and product</PackageReleaseNotes>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageId>MaxRev.BinaryRelations</PackageId>
-    <Product>MaxRev.BinaryRelations</Product>
-    <LangVersion>latest</LangVersion> 
+    <Product>MaxRev.BinaryRelations</Product> 
   </PropertyGroup>
 
   <ItemGroup>
