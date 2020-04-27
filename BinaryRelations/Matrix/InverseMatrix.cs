@@ -1,6 +1,6 @@
 ﻿ 
 using System;
- 
+
 namespace MaxRev.Extensions.Matrix
 {
     public static partial class MatrixExtensions

@@ -457,7 +457,6 @@ namespace MaxRev.Extensions.Matrix
             return a; 
         }
 
-<<<<<<< HEAD
         #endregion      
         
         #region Dot & Cross
@@ -504,8 +503,6 @@ namespace MaxRev.Extensions.Matrix
             };
         }
 
-=======
->>>>>>> 1d77d5e515cd99551e70aa0b10216284c45669dc
         #endregion
 
         #region Multiply  

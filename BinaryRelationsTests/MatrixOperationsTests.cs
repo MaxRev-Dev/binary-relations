@@ -22,7 +22,7 @@ namespace BinaryRelationsTests
             for (int j = 0; j < 10; j++)
             {
                 var n = _rnd.Next(10, 100);
-                var m = RandomExtensions.MatrixRandom(n, -100, 100);
+                var m = RandomExtensions.Default.MatrixRandomD(n, -100, 100);
                 var i = m.Inverse();
                 var I = MatrixExtensions.IdentityD(n);
                 var p = m.Multiply(i);

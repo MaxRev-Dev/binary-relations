@@ -140,8 +140,7 @@ namespace MaxRev.Extensions.Matrix
         }
 
         #endregion
-          
-
+           
         #region Multiply by value additional
 
         public static double[,] Multiply(this double[,] array1, in int x)
@@ -155,11 +154,7 @@ namespace MaxRev.Extensions.Matrix
         }
 
         #endregion
-         
-        #region Multiply by value additional
-
-
-
+          
         #region Multiply
 
 
