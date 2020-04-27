@@ -1,0 +1,101 @@
+﻿<#@ template language="C#" #>
+<#@ assembly name="System.Core" #> 
+using System; 
+
+<# 
+    var types = new []{ "int", "float", "double"};
+#>
+
+namespace MaxRev.Extensions.Matrix 
+{
+    public class MatrixRandomizer
+    { 
+        private readonly Random _random = new Random();
+        private static MatrixRandomizer _instance;
+        public static MatrixRandomizer Default => _instance ??= new MatrixRandomizer();
+
+        public int LowRandBounds { get; set; } = 0;
+        public int MaxRandBounds { get; set; } = 100;
+    
+        /// <summary>
+        /// Normalizes float point output of matrix randomizer. Default is 1.0 / 100
+        /// </summary>
+        public float Normalizer = 1.0f / 100.0f;
+<#
+    foreach (var t in  types)
+    {
+#>
+ 
+        public void Randomize(<#= t #>[,] array)
+        {
+            for (int i = 0; i < array.GetLength(0); i++)
+            {
+                for (int j = 0; j < array.GetLength(1); j++)
+                {
+<#
+    if (t != "int")
+    {
+#>                   
+                    array[i, j] = (<#= t #>)(_random.Next(LowRandBounds, MaxRandBounds) * Normalizer);
+<#
+    }
+    else
+    {
+
+#>
+                    array[i, j] = _random.Next(LowRandBounds, MaxRandBounds);
+<#
+    }
+#>
+                }
+            }
+        }
+
+        public void Randomize(<#= t #>[] array)
+        {
+            for (int i = 0; i < array.GetLength(0); i++)
+            {
+<#
+    if (t != "int")
+    {
+#>                   
+                array[i] = (<#= t #>)(_random.Next(LowRandBounds, MaxRandBounds) * Normalizer);
+<#
+    }
+    else
+    {
+#>
+                array[i] = _random.Next(LowRandBounds, MaxRandBounds);
+<#
+    }
+#>
+            }
+        }
+
+        public <#= t #>[,] AllocateRandomSquareMatrix<#= char.ToUpper(t[0]) #>(int size)
+        {
+            var array = MatrixExtensions.Allocate<#= char.ToUpper(t[0]) #>(size);
+            Randomize(array);
+            return array;
+        }
+
+        public <#= t #>[] AllocateRandomVector<#= char.ToUpper(t[0]) #>(int size)
+        {
+            var array = new <#= t #>[size];
+            Randomize(array);
+            return array;
+        }
+
+        public <#= t #>[,] MatrixRandom<#= char.ToUpper(t[0]) #>(int size, double minVal, double maxVal)
+        {
+            var result = MatrixExtensions.Allocate<#= char.ToUpper(t[0]) #>(size);
+            for (int i = 0; i < size; ++i)
+                for (int j = 0; j < size; ++j)
+                    result[i, j] = (<#= t #>)(_random.NextDouble() * (maxVal - minVal) + minVal);
+            return result;
+        }
+<#
+    }
+#>
+    }
+}

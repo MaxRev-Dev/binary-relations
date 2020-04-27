@@ -1,0 +1,433 @@
+﻿<#@ template language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #> 
+using System;
+using System.Linq; 
+
+<# 
+    var types = new []{ "int", "float", "double"};
+#>
+
+namespace MaxRev.Extensions.Matrix
+{
+    public static partial class MatrixExtensions
+    { 
+        #region Add array
+<#  foreach (var t in  types)
+    { 
+#>
+       
+        public static <#= t #>[,] Add(this <#= t #>[,] array1, in <#= t #> value)
+        {
+            var rA = array1.GetLength(0);
+            var cA = array1.GetLength(1);
+            var r = new <#= t #>[rA, cA]; 
+
+            for (var i = 0; i < rA; i++)
+            {
+                for (var j = 0; j < cA; j++)
+                {
+                    r[i, j] = array1[i, j] + value;
+                }
+            }
+
+            return r;
+        }
+<# 
+    } 
+
+    foreach (var t in  types)
+    { 
+#>
+
+        public static <#= t #>[] Add(this <#= t #>[] array1, in <#= t #> value)
+        {
+            var rA = array1.GetLength(0);
+            var r = new <#= t #>[rA];
+             
+            for (var i = 0; i < rA; i++)
+            {
+                r[i] = array1[i] + value;
+            }
+
+            return r;
+        }
+<# }
+    foreach (var t in  types)
+    { 
+#>
+
+        public static <#= t #>[,] Add(this <#= t #>[,] array1, in <#= t #>[,] array2)
+        {
+            var rA = array1.GetLength(0);
+            var cA = array1.GetLength(1);
+            var r = new <#= t #>[rA, cA];
+             
+            for (var i = 0; i < rA; i++)
+            {
+                for (var j = 0; j < cA; j++)
+                {
+                    r[i, j] = array1[i, j] + array2[i, j];
+                }
+            }
+
+            return r; 
+        }
+        
+<# } #>
+        #endregion
+
+        #region Add vector
+
+<# foreach (var t in  types)
+    { 
+#>
+        public static <#= t #>[] Add(this <#= t #>[] a, in <#= t #>[] b)
+        {
+            var ret = new <#= t #>[a.Length];
+            for (int i = 0; i < a.Length; i++)
+            {
+                ret[i] = a[i] + b[i];
+            }
+            return ret;
+        }
+
+<# 
+    } 
+    foreach (var t in  types)
+    { 
+#>
+        public static <#= t #>[] Add(this <#= t #>[,] array1, in <#= t #>[] vector)
+        {
+            var r = new <#= t #>[array1.GetLength(0)]; 
+            for (var i = 0; i < array1.GetLength(0); i++)
+            {
+                <#= t #> temp = default;
+                for (var j = 0; j < array1.GetLength(1); j++)
+                {
+                    temp = array1[i, j] + vector[j];
+                }
+
+                r[i] = temp;
+            }
+
+            return r;
+        }
+
+<# 
+    }
+#>
+        #endregion  
+        
+        #region Subtract vector
+
+<# foreach (var t in  types)
+    { 
+#>
+        public static <#= t #>[] Subtract(this <#= t #>[] a, in <#= t #>[] b)
+        {
+            var ret = new <#= t #>[a.Length];
+            for (int i = 0; i < a.Length; i++)
+            {
+                ret[i] = a[i] - b[i];
+            }
+            return ret;
+        }
+
+<# 
+    } 
+    foreach (var t in  types)
+    { 
+#>
+        public static <#= t #>[] Subtract(this <#= t #>[,] array1, in <#= t #>[] vector)
+        {
+            var r = new <#= t #>[array1.GetLength(0)]; 
+            for (var i = 0; i < array1.GetLength(0); i++)
+            {
+                <#= t #> temp = default;
+                for (var j = 0; j < array1.GetLength(1); j++)
+                {
+                    temp = array1[i, j] - vector[j];
+                }
+
+                r[i] = temp;
+            }
+
+            return r;
+        }
+
+<# 
+    }
+#>
+        #endregion
+
+        #region Subtract matrix
+
+<# foreach (var t in  types)
+    { 
+#>
+        public static <#= t #>[,] Subtract(this <#= t #>[,] array1, in <#= t #>[,] array2)
+        {
+            var rA = array1.GetLength(0);
+            var cA = array1.GetLength(1);
+            var r = new <#= t #>[rA, cA];
+            for (var i = 0; i < rA; i++)
+            {
+                for (var j = 0; j < cA; j++)
+                {
+                    r[i, j] = array1[i, j] - array2[i, j];
+                }
+            }
+
+            return r;
+        }
+
+<# 
+    }
+#>
+        #endregion    
+        
+        #region Opposite vector
+
+<# foreach (var t in  types)
+    { 
+#>
+        public static <#= t #>[] Opposite(this <#= t #>[] array1)
+        {  
+            return array1.Select(x => -x).ToArray();
+        }
+
+<# 
+    }
+#>
+        #endregion               
+
+        #region Multiply vector by vector
+
+<# foreach (var t in  types)
+    { 
+#>
+        public static <#= t #> Multiply(this <#= t #> [] array1, in <#= t #> [] vector)
+        { 
+            <#= t #> temp = default;
+            for (var i = 0; i < array1.GetLength(0); i++)
+            {
+                temp +=  array1[i] * vector[i];
+            }
+            return temp;
+        }
+
+<# } #>
+        #endregion 
+        
+        #region Multiply vector by vector
+
+<# foreach (var t in  types.Skip(1))
+    { 
+#>
+        public static <#= t #>[] Normalize(this <#= t #>[] a)
+        {
+            if (a.Any(x => Math.Abs(x) > 1))
+            {
+                var b = new <#= t #>[a.Length]; 
+                var m = Math.Sqrt(a.Aggregate(default(<#= t #>), (acc, x) => acc + x * x));
+                for (int i = 0; i < a.Length; i++)
+                    b[i] = (<#= t #>)(a[i] / m);
+                return b;
+            } 
+            return a; 
+        }
+
+<# } #>
+        #endregion      
+        
+        #region Dot & Cross
+
+<# foreach (var t in  types.Skip(1))
+    { 
+#> 
+        public static <#= t #> Dot(this <#= t #>[] v1, <#= t #>[] v2)
+        {
+            return v1.Multiply(v2);
+        }
+
+        public static <#= t #> Cross2D(this <#= t #>[] v1, <#= t #>[] v2)
+        {
+            return v1[0] * v2[1] - v1[1] * v2[0];
+        }
+
+        public static <#= t #>[] Cross3D(this <#= t #>[] v1, <#= t #>[] v2)
+        {
+            return new[]
+            {
+                v1[1] * v2[2] - v1[2] * v2[1],
+                -v1[0] * v2[2] + v1[2] * v2[0],
+                v1[0] * v2[1] - v1[1] * v2[0],
+            };
+        }
+
+<# } #>
+        #endregion
+
+        #region Multiply  
+<# foreach (var t in  types)
+      { 
+#>
+        
+        public static <#= t #>[] Multiply(this <#= t #>[,] array1, in <#= t #>[] vector)
+        {
+            var r = new <#= t #>[array1.GetLength(0)]; 
+            for (var i = 0; i < array1.GetLength(0); i++)
+            {
+                <#= t #> temp = default;
+                for (var j = 0; j < array1.GetLength(1); j++)
+                {
+                    temp += array1[i, j] * vector[j];
+                }
+
+                r[i] = temp;
+            }
+
+            return r;
+        }
+<# } #>    
+       #region Multiply vector by matrix
+<# foreach (var t in  types)
+      { 
+#>
+
+        public static <#= t #>[] Multiply(this <#= t #>[] a, <#= t #>[,] matrix)
+        {
+            var res = new <#= t #>[a.Length]; 
+            for (int u = 0; u < a.Length; u++)
+            {
+                var i = 0;
+                res[u] = a.Aggregate(default(<#= t #>), (acc, x) => acc + x * matrix[u, i++]);
+            }
+            return res;
+        }
+
+<# } #>    
+        #endregion
+<# foreach (var t in  types)
+      { 
+#>
+        
+        public static <#= t #>[,] Multiply(this <#= t #>[,] array1, in <#= t #> x)
+        {
+            if (array1 == null) throw new ArgumentNullException(nameof(array1));
+            var rA = array1.GetLength(0);
+            var cA = array1.GetLength(1);
+            var r = new <#= t #>[rA, cA]; 
+            for (var i = 0; i < rA; i++)
+            {
+                for (var j = 0; j < cA; j++)
+                {
+                    r[i, j] =  array1[i, j] * x;
+                }
+            }
+
+            return r;
+        }
+<# } #>    
+<# foreach (var t in  types)
+      { 
+#>
+        
+        public static <#= t #>[][] Multiply(this <#= t #>[][] array1, in <#= t #>[][] array2)
+        {
+            CheckCollRowRule(array1, array2);
+            var m = array1.Length;
+            var n = array2.Length;
+            var p = array2[0].Length;
+            var r = new <#= t #>[m].Select(x => new <#= t #>[p]).ToArray(); 
+            for (var i = 0; i < m; i++)
+            {
+                for (var j = 0; j < p; j++)
+                {
+                    for (var k = 0; k < n; k++)
+                    {
+                        r[i][j] += array1[i][k] * array2[k][j];
+                    }
+                }
+            }
+
+            return r;
+        }
+<# } #>    
+<# foreach (var t in  types)
+      { 
+#>
+        
+        public static <#= t #>[,] Multiply(this <#= t #>[,] array1, in <#= t #>[,] array2)
+        {
+            CheckCollRowRule(array1, array2);
+            var m = array1.GetLength(0);
+            var n = array2.GetLength(0);
+            var p = array2.GetLength(1);
+            var r = new <#= t #>[m, p]; 
+            for (var i = 0; i < m; i++)
+            {
+                for (var j = 0; j < p; j++)
+                {
+                    for (var k = 0; k < n; k++)
+                    {
+                        r[i,j] = r[i,j] + array1[i,k] * array2[k,j];
+                    }
+                }
+            }
+
+            return r;
+        }
+<# } #>    
+        #endregion
+
+        #region Power
+<# foreach (var t in  types)
+      { 
+#>
+  
+        public static <#= t #>[,] MatrixPower(this <#= t #>[,] array1, int n)
+        {
+            while (true)
+            {
+                if (n == 1) return array1;
+                var r = Multiply(array1, array1);
+                array1 = r;
+                n -= 1;
+            }
+        }
+<# } #>
+        
+        #endregion
+
+        #region SquareUnify
+<# foreach (var t in  types)
+      { 
+#>
+  
+        public static (<#= t #>[,] m1, <#= t #>[,] m2) SquareUnify(this <#= t #>[,] matrix1, in <#= t #>[,] matrix2)
+        {
+            var m = Math.Max(matrix1.GetLength(0), matrix2.GetLength(0));
+            var n = Math.Max(matrix1.GetLength(1), matrix2.GetLength(1));
+            var x = Math.Max(m, n);
+
+            var r1 = Identity<#= char.ToUpper(t.First()) #>(x);
+            for (var i = 0; i < matrix1.GetLength(0); i++)
+                for (var j = 0; j < matrix1.GetLength(1); j++)
+                    r1[i, j] = matrix1[i, j];
+
+            var r2 = Identity<#= char.ToUpper(t.First()) #>(x);
+            for (var i = 0; i < matrix2.GetLength(0); i++)
+                for (var j = 0; j < matrix2.GetLength(1); j++)
+                    r2[i, j] = matrix2[i, j];
+            return (r1, r2);
+        }
+<# } #>
+        
+        #endregion
+
+
+
+    }
+}

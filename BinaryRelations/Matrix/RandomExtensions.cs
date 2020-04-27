@@ -4,44 +4,68 @@ namespace MaxRev.Extensions.Matrix
 {
     public static class RandomExtensions
     {
-        public static int LowRandBounds = 0;
-        public static int MaxRandBounds = 100;
+        /// <summary>
+        /// <see cref="MatrixRandomizer"/> alias
+        /// </summary>
+        public static MatrixRandomizer Default => MatrixRandomizer.Default;
+
+        [Obsolete("Use Randomizer type")]
+        public static int LowRandBounds
+        {
+            get => MatrixRandomizer.Default.LowRandBounds;
+            set => MatrixRandomizer.Default.LowRandBounds = value;
+        }
+
+        [Obsolete("Use Randomizer type")]
+        public static int MaxRandBounds
+        {
+            get => MatrixRandomizer.Default.MaxRandBounds;
+            set => MatrixRandomizer.Default.MaxRandBounds = value;
+        }
+
         /// <summary>
         /// Normalizes float point output of matrix randomizer. Default is 1.0 / 100
         /// </summary>
-        public static double Normalizer = 1.0 / 100.0;
-        private static readonly Random _rand = new Random();
+        [Obsolete("Use Randomizer type")]
+        public static float Normalizer
+        {
+            get => MatrixRandomizer.Default.Normalizer;
+            set => MatrixRandomizer.Default.Normalizer = value;
+        }
+
+        [Obsolete("Use Randomizer type")]
         public static void Randomize(double[,] array)
         {
-            for (int i = 0; i < array.GetLength(0); i++)
-            {
-                for (int j = 0; j < array.GetLength(1); j++)
-                {
-                    array[i, j] = _rand.Next(LowRandBounds, MaxRandBounds) * Normalizer;
-                }
-            }
+            MatrixRandomizer.Default.Randomize(array);
         }
 
+        [Obsolete("Use Randomizer type")]
         public static void Randomize(double[] array)
         {
-            for (int i = 0; i < array.GetLength(0); i++)
-            {
-                array[i] = _rand.Next(LowRandBounds, MaxRandBounds) * Normalizer;
-            }
+            MatrixRandomizer.Default.Randomize(array);
         }
 
+        [Obsolete("Use Randomizer type")]
         public static double[,] AllocateRandomSquareMatrix(int size)
         {
             var array = new double[size, size];
-            Randomize(array);
+            MatrixRandomizer.Default.Randomize(array);
             return array;
         }
 
+        [Obsolete("Use Randomizer type")]
         public static double[] AllocateRandomVector(int size)
         {
             var array = new double[size];
-            Randomize(array);
+            MatrixRandomizer.Default.Randomize(array);
             return array;
+        }
+
+        [Obsolete("Use Randomizer type")]
+        public static double[,] MatrixRandom(int size,
+            double minVal, double maxVal)
+        {
+            return MatrixRandomizer.Default.MatrixRandomD(size, minVal, maxVal);
         }
     }
 }

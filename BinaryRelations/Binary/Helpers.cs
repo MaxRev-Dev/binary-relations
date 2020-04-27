@@ -69,12 +69,13 @@ namespace MaxRev.Extensions.Binary
         {
             ThrowIfNull(matrix1);
 
-            var length = matrix1.GetLength(0);
-            var result = new T[length, length];
+            var length0 = matrix1.GetLength(0);
+            var length1 = matrix1.GetLength(1);
+            var result = new T[length0, length1];
 
-            for (int i = 0; i < length; i++)
+            for (int i = 0; i < length0; i++)
             {
-                for (int j = 0; j < length; j++)
+                for (int j = 0; j < length1; j++)
                 {
                     result[i, j] = (T)Convert.ChangeType(matrix1[i, j], typeof(T));
                 }
@@ -94,10 +95,11 @@ namespace MaxRev.Extensions.Binary
         {
             ThrowIfNull(matrix1);
             if (writer == default) writer = Console.Out;
-            var length = matrix1.GetLength(0);
-            for (int i = 0; i < length; i++)
+            var length0 = matrix1.GetLength(0);
+            var length1 = matrix1.GetLength(1);
+            for (int i = 0; i < length0; i++)
             {
-                for (int j = 0; j < length; j++)
+                for (int j = 0; j < length1; j++)
                 {
                     writer.Write(matrix1[i, j].ToString() + ' ');
                 }

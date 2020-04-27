@@ -1,4 +1,6 @@
-﻿namespace MaxRev.Extensions.Binary
+﻿using MaxRev.Extensions.Matrix;
+
+namespace MaxRev.Extensions.Binary
 {
     public static partial class BinaryRelations
     {
@@ -15,7 +17,7 @@
             ThrowIfNull_NotQuad(matrix1);
 
             var length = matrix1.GetLength(0);
-            var result = (bool[,])matrix1.Clone();
+            var result = matrix1.Duplicate();
             for (int k = 0; k < length; k++)
                 for (int i = 0; i < length; i++)
                     for (int j = 0; j < length; j++)
@@ -35,7 +37,7 @@
             ThrowIfNull_NotQuad(matrix1);
 
             var length = matrix1.GetLength(0);
-            var result = (bool[,])matrix1.Clone();
+            var result = matrix1.Duplicate();
             for (int i = 0; i < length; i++)
             {
                 result[i, i] = true;
@@ -55,7 +57,7 @@
             ThrowIfNull_NotQuad(matrix1);
 
             var length = matrix1.GetLength(0);
-            var result = (bool[,])matrix1.Clone();
+            var result = matrix1.Duplicate();
             for (int i = 0; i < length; i++)
             {
                 for (int j = 0; j < length; j++)

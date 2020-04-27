@@ -6,7 +6,7 @@ using System.Runtime.CompilerServices;
 
 namespace MaxRev.Extensions.Matrix
 {
-    public static class MatrixExtensions
+    public static partial class MatrixExtensions
     {
         #region Fill
 
@@ -16,7 +16,7 @@ namespace MaxRev.Extensions.Matrix
 
             var length = array.GetLength(0);
 
-            for (int i = 0; i < length; i++)
+            for (var i = 0; i < length; i++)
             {
                 array[i] = value;
             }
@@ -30,9 +30,9 @@ namespace MaxRev.Extensions.Matrix
 
             var length = array.GetLength(0);
 
-            for (int i = 0; i < length; i++)
+            for (var i = 0; i < length; i++)
             {
-                for (int j = 0; j < length; j++)
+                for (var j = 0; j < length; j++)
                 {
                     array[i, j] = value;
                 }
@@ -44,6 +44,44 @@ namespace MaxRev.Extensions.Matrix
         #endregion
 
         #region Coll & Row 
+
+        internal static T[] GetRow<T>(this T[][] matrix, in int row)
+        {
+            var rowLength = matrix[0].Length;
+            var rowVector = new T[rowLength];
+
+            for (var i = 0; i < rowLength; i++)
+                rowVector[i] = matrix[row][i];
+
+            return rowVector;
+        }
+
+        internal static void SetRow<T>(this T[][] matrix, in int row, in T[] rowVector)
+        {
+            var rowLength = matrix[0].Length;
+
+            for (var i = 0; i < rowLength; i++)
+                matrix[row][i] = rowVector[i];
+        }
+
+        internal static T[] GetCol<T>(this T[][] matrix, in int col)
+        {
+            var colLength = matrix.Length;
+            var colVector = new T[colLength];
+
+            for (var i = 0; i < colLength; i++)
+                colVector[i] = matrix[i][col];
+
+            return colVector;
+        }
+
+        internal static void SetCol<T>(this T[][] matrix, in int col, in T[] colVector)
+        {
+            var colLength = matrix.Length;
+
+            for (var i = 0; i < colLength; i++)
+                matrix[i][col] = colVector[i];
+        }
 
         public static T[] GetRow<T>(this T[,] matrix, in int row)
         {
@@ -89,10 +127,10 @@ namespace MaxRev.Extensions.Matrix
 
         public static T[,] Transpose<T>(this T[,] array)
         {
-            var r = new T[array.GetLength(0), array.GetLength(1)];
-            for (int i = 0; i < array.GetLength(0); i++)
+            var r = new T[array.GetLength(1), array.GetLength(0)];
+            for (var i = 0; i < array.GetLength(0); i++)
             {
-                for (int j = 0; j < array.GetLength(1); j++)
+                for (var j = 0; j < array.GetLength(1); j++)
                 {
                     r[j, i] = array[i, j];
                 }
@@ -102,337 +140,43 @@ namespace MaxRev.Extensions.Matrix
         }
 
         #endregion
+          
 
-        #region Add array
-
-        public static double[,] Add(this double[,] array1, in double val)
-        {
-            return AddImpl(array1, val);
-        }
-
-        public static float[,] Add(this float[,] array1, in float val)
-        {
-            return AddImpl(array1, val);
-        }
-
-        public static int[,] Add(this int[,] array1, in int val)
-        {
-            return AddImpl(array1, val);
-        }
-
-        private static T[,] AddImpl<T>(this T[,] array1, in T value)
-        {
-            int rA = array1.GetLength(0);
-            int cA = array1.GetLength(1);
-            var r = new T[rA, cA];
-
-            var addOp = AddOp<T>();
-
-            for (int i = 0; i < rA; i++)
-            {
-                for (int j = 0; j < cA; j++)
-                {
-                    r[i, j] = addOp(array1[i, j], value);
-                }
-            }
-
-            return r;
-        }
-
-        #endregion
-
-        #region Add array
-
-        public static double[,] Add(this double[,] array1, in double[,] vector)
-        {
-            return AddImpl(array1, vector);
-        }
-
-        public static float[,] Add(this float[,] array1, in float[,] vector)
-        {
-            return AddImpl(array1, vector);
-        }
-
-        public static int[,] Add(this int[,] array1, in int[,] vector)
-        {
-            return AddImpl(array1, vector);
-        }
-
-        private static T[,] AddImpl<T>(this T[,] array1, in T[,] array2)
-        {
-            int rA = array1.GetLength(0);
-            int cA = array1.GetLength(1);
-            var r = new T[rA, cA];
-
-            var addOp = AddOp<T>();
-            for (int i = 0; i < rA; i++)
-            {
-                for (int j = 0; j < cA; j++)
-                {
-                    r[i, j] = addOp(array1[i, j], array2[i, j]);
-                }
-            }
-
-            return r;
-        }
-
-        #endregion
-
-        #region Add vector
-
-        public static double[] Add(this double[,] array1, in double[] vector)
-        {
-            return AddImpl(array1, vector);
-        }
-
-        public static float[] Add(this float[,] array1, in float[] vector)
-        {
-            return AddImpl(array1, vector);
-        }
-
-        public static int[] Add(this int[,] array1, in int[] vector)
-        {
-            return AddImpl(array1, vector);
-        }
-
-        private static T[] AddImpl<T>(this T[,] array1, in T[] vector)
-        {
-            var r = new T[array1.GetLength(0)];
-            var addOp = AddOp<T>();
-            for (int i = 0; i < array1.GetLength(0); i++)
-            {
-                T temp = default;
-                for (int j = 0; j < array1.GetLength(1); j++)
-                {
-                    temp = addOp(array1[i, j], vector[j]);
-                }
-
-                r[i] = temp;
-            }
-
-            return r;
-        }
-
-        #endregion
-
-        #region Subtract matrix
-
-        public static double[,] Subtract(this double[,] array1, in double[,] array2)
-        {
-            return SubtractImpl(array1, array2);
-        }
-
-        public static float[,] Subtract(this float[,] array1, in float[,] array2)
-        {
-            return SubtractImpl(array1, array2);
-        }
-
-        public static int[,] Subtract(this int[,] array1, in int[,] array2)
-        {
-            return SubtractImpl(array1, array2);
-        }
-
-        private static T[,] SubtractImpl<T>(this T[,] array1, in T[,] array2)
-        {
-            int rA = array1.GetLength(0);
-            int cA = array1.GetLength(1);
-            var r = new T[rA, cA];
-            var subtOp = SubtOp<T>();
-            for (int i = 0; i < rA; i++)
-            {
-                for (int j = 0; j < cA; j++)
-                {
-                    r[i, j] = subtOp(array1[i, j], array2[i, j]);
-                }
-            }
-
-            return r;
-        }
-
-        #endregion
-
-        #region Subtract vector
-
-        public static double[] Subtract(this double[,] array1, in double[] vector)
-        {
-            return SubtractImpl(array1, vector);
-        }
-
-        public static float[] Subtract(this float[,] array1, in float[] vector)
-        {
-            return SubtractImpl(array1, vector);
-        }
-
-        public static int[] Subtract(this int[,] array1, in int[] vector)
-        {
-            return SubtractImpl(array1, vector);
-        }
-
-        private static T[] SubtractImpl<T>(this T[,] array1, in T[] vector)
-        {
-            int rA = array1.GetLength(0);
-            int cA = array1.GetLength(1);
-            var r = new T[rA];
-            var subtOp = SubtOp<T>();
-            for (int i = 0; i < rA; i++)
-            {
-                T temp = default;
-                for (int j = 0; j < cA; j++)
-                {
-                    temp = subtOp(array1[i, j], vector[j]);
-                }
-
-                r[i] = temp;
-            }
-
-            return r;
-        }
-
-        #endregion
-
-        #region Multiply by vector
-
-        public static double[] Multiply(this double[,] array1, in double[] vector)
-        {
-            return MultiplyImpl(array1, vector);
-        }
-
-        public static float[] Multiply(this float[,] array1, in float[] vector)
-        {
-            return MultiplyImpl(array1, vector);
-        }
-
-        public static int[] Multiply(this int[,] array1, in int[] vector)
-        {
-            return MultiplyImpl(array1, vector);
-        }
-
-        private static T[] MultiplyImpl<T>(this T[,] array1, in T[] vector)
-        {
-            var r = new T[array1.GetLength(0)];
-            var multOp = MultOp<T>();
-            var addOp = AddOp<T>();
-            for (int i = 0; i < array1.GetLength(0); i++)
-            {
-                T temp = default;
-                for (int j = 0; j < array1.GetLength(1); j++)
-                {
-                    temp = addOp(temp, multOp(array1[i, j], vector[j]));
-                }
-
-                r[i] = temp;
-            }
-
-            return r;
-        }
-
-        #endregion
-
-        #region Multiply by value
+        #region Multiply by value additional
 
         public static double[,] Multiply(this double[,] array1, in int x)
         {
-            return Multiply<double>(array1, x);
+            return Multiply(array1, (float)x);
         }
 
         public static float[,] Multiply(this float[,] array1, in int x)
         {
-            return Multiply<float>(array1, x);
-        }
-
-        public static int[,] Multiply(this int[,] array1, in int x)
-        {
-            return Multiply<int>(array1, x);
-        }
-
-        private static T[,] Multiply<T>(this T[,] array1, in T x)
-        {
-            if (array1 == null) throw new ArgumentNullException(nameof(array1));
-            int rA = array1.GetLength(0);
-            int cA = array1.GetLength(1);
-            var r = new T[rA, cA];
-            var multOp = MultOp<T>();
-            for (int i = 0; i < rA; i++)
-            {
-                for (int j = 0; j < cA; j++)
-                {
-                    r[i, j] = multOp(array1[i, j], x);
-                }
-            }
-
-            return r;
+            return Multiply(array1, (float)x);
         }
 
         #endregion
+         
+        #region Multiply by value additional
 
-        #region Power
 
-        public static double[,] MatrixPower(this double[,] array1, in int n)
-        {
-            return MatrixPowerImpl(array1, n);
-        }
-
-        public static float[,] MatrixPower(this float[,] array1, in int n)
-        {
-            return MatrixPowerImpl(array1, n);
-        }
-
-        public static int[,] MatrixPower(this int[,] array1, in int n)
-        {
-            return MatrixPowerImpl(array1, n);
-        }
-
-        private static T[,] MatrixPowerImpl<T>(this T[,] array1, int n)
-        {
-            while (true)
-            {
-                if (n == 1) return array1;
-                var r = MultiplyImpl(array1, array1);
-                array1 = r;
-                n -= 1;
-            }
-        }
-
-        #endregion
 
         #region Multiply
 
-        public static float[,] Multiply(this float[,] array1, in float[,] array2)
+
+        private static void CheckCollRowRule<T>(T[][] array1, in T[][] array2)
         {
-            return MultiplyImpl(array1, array2);
+            if (array1.Length == 0 ||
+                array2.Length == 0) throw new InvalidOperationException("Empty matrix");
+            if (array1[0].Length != array2.Length)
+                throw new InvalidOperationException("Does not satisfy matrix rule - A must be m × n matrix and B is n × p");
         }
 
-        public static double[,] Multiply(this double[,] array1, in double[,] array2)
+        private static void CheckCollRowRule<T>(T[,] array1, in T[,] array2)
         {
-            return MultiplyImpl(array1, array2);
-        }
-
-        public static int[,] Multiply(this int[,] array1, int[,] array2)
-        {
-            return MultiplyImpl(array1, array2);
-        }
-
-        private static T[,] MultiplyImpl<T>(this T[,] array1, in T[,] array2)
-        {
-            ThrowIfSizeNotEqual(array1, array2);
-            int rA = array1.GetLength(0);
-            int cA = array1.GetLength(1);
-            var r = new T[rA, cA];
-            var multOp = MultOp<T>();
-            var addOp = AddOp<T>();
-            for (int i = 0; i < rA; i++)
-            {
-                for (int j = 0; j < cA; j++)
-                {
-                    for (int k = 0; k < rA; k++)
-                    {
-                        var tmp = multOp(array1[i, k], array2[k, j]);
-                        r[i, j] = addOp(r[i, j], tmp);
-                    }
-                }
-            }
-
-            return r;
+            if (array1.GetLength(0) == 0 ||
+                array2.GetLength(0) == 0) throw new InvalidOperationException("Empty matrix");
+            if (array1.GetLength(1) != array2.GetLength(0))
+                throw new InvalidOperationException("Does not satisfy matrix rule - A must be m × n matrix and B is n × p");
         }
 
         #endregion
@@ -456,12 +200,12 @@ namespace MaxRev.Extensions.Matrix
 
         private static T[,] MultiplyRecursivelyImpl<T>(this T[,] array1, in T[,] array2)
         {
-            int rA = array1.GetLength(0);
-            int cA = array1.GetLength(1);
+            var rA = array1.GetLength(0);
+            var cA = array1.GetLength(1);
             var r = new T[rA, cA];
-            for (int i = 0; i < rA; i++)
+            for (var i = 0; i < rA; i++)
             {
-                for (int j = 0; j < cA; j++)
+                for (var j = 0; j < cA; j++)
                 {
                     r[i, j] = InnerRecursively(array1, array2, i, j, array2.GetLength(0) - 1);
                 }
@@ -500,11 +244,6 @@ namespace MaxRev.Extensions.Matrix
         {
             return InlineOperation<T>((x, y) => Expression.Add(x, y));
         }
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static Func<T, T, T> SubtOp<T>()
-        {
-            return InlineOperation<T>((x, y) => Expression.Subtract(x, y));
-        }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static Func<T, T, T> MultOp<T>()
@@ -512,39 +251,128 @@ namespace MaxRev.Extensions.Matrix
             return InlineOperation<T>((x, y) => Expression.Multiply(x, y));
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static Func<T, T, T> InlineOperation<T>(Expression<Func<Expression, Expression, BinaryExpression>> rfunc)
         {
             var be = ((MethodCallExpression)rfunc.Body).Method.Name;
-            var func = rfunc.Compile();
             var t = typeof(T);
             Func<T, T, T> mult;
-            if (!_typeCache.TryGetValue(t, out var tmp) || !tmp.ContainsKey(be))
+            if (_typeCache.TryGetValue(t, out var tmp) && tmp.ContainsKey(be))
+            {
+                mult = (Func<T, T, T>)tmp[be];
+            }
+            else
             {
                 var lhs = Expression.Parameter(t);
                 var rhs = Expression.Parameter(t);
-                mult = (Func<T, T, T>)Expression.Lambda(func(lhs, rhs), lhs, rhs).Compile();
+                mult = (Func<T, T, T>)Expression.Lambda(rfunc.Compile()(lhs, rhs), lhs, rhs).Compile();
                 if (!_typeCache.ContainsKey(t))
                     _typeCache[t] = new Dictionary<string, Delegate>();
                 _typeCache[t].Add(be, mult);
             }
-            else
-            {
-                mult = (Func<T, T, T>)tmp[be];
-            }
+
             return mult;
         }
         #endregion
 
-        #region Other
+        #region Allocate
+
+        public static int[,] AllocateI(in int size)
+        {
+            return new int[size, size];
+        }
+
+        public static float[,] AllocateF(in int size)
+        {
+            return new float[size, size];
+        }
+
+        public static double[,] AllocateD(in int size)
+        {
+            return new double[size, size];
+        }
+        #endregion
+
+        #region Identity
+
+        public static int[,] Identity(int size)
+        {
+            return IdentityI(size);
+        }
+
+        public static int[,] IdentityI(in int size)
+        {
+            return IdentityInternal<int>(size);
+        }
+
+        public static float[,] IdentityF(in int size)
+        {
+            return IdentityInternal<float>(size);
+        }
+
+        public static double[,] IdentityD(in int size)
+        {
+            return IdentityInternal<double>(size);
+        }
+
+        private static T[,] IdentityInternal<T>(in int size)
+        {
+            var ret = new T[size, size];
+            var val = (T)System.Convert.ChangeType(1, typeof(T));
+            for (var i = 0; i < size; i++)
+            {
+                ret[i, i] = val;
+            }
+            return ret;
+        }
+
+        #endregion
+
+        #region Convert
+
+        public static T[][] Convert<T>(this T[,] matrix)
+        {
+            var m = matrix.GetLength(0);
+            var n = matrix.GetLength(1);
+            var ret = new T[m].Select(x => new T[n]).ToArray();
+            for (var i = 0; i < m; i++)
+            {
+                for (var j = 0; j < n; j++)
+                {
+                    ret[i][j] = matrix[i, j];
+                }
+            }
+
+            return ret;
+        }
+
+        public static T[,] Convert<T>(this T[][] matrix)
+        {
+            var m = matrix.Length;
+            if (m == 0) throw new InvalidOperationException("Empty matrix");
+            var n = matrix[0].Length;
+            var ret = new T[m, n];
+            for (var i = 0; i < m; i++)
+            {
+                for (var j = 0; j < n; j++)
+                {
+                    ret[i, j] = matrix[i][j];
+                }
+            }
+
+            return ret;
+        }
+
+        #endregion
+
+        #region Print
 
         public static void Print<T>(this T[,] arr, int floatTolerance = 5)
         {
             var a = arr.GetLength(0);
             var b = arr.GetLength(1);
-            for (int i = 0; i < a; i++)
+            for (var i = 0; i < a; i++)
             {
-                for (int j = 0; j < b; j++)
+                for (var j = 0; j < b; j++)
                 {
                     string fx = default;
                     if (arr[i, j] is float f)
@@ -561,10 +389,11 @@ namespace MaxRev.Extensions.Matrix
                 Console.WriteLine();
             }
         }
+
         public static void Print<T>(this T[] arr, int floatTolerance = 5)
         {
             var a = arr.GetLength(0);
-            for (int i = 0; i < a; i++)
+            for (var i = 0; i < a; i++)
             {
                 string fx = default;
                 if (arr[i] is float f)
@@ -576,17 +405,6 @@ namespace MaxRev.Extensions.Matrix
                 if (fx == default) fx = arr[i].ToString();
                 Console.Write(fx);
                 Console.Write(new string(' ', 1));
-            }
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static void ThrowIfSizeNotEqual<T>(this T[,] array1, in T[,] array2)
-        {
-            if (array1 == null) throw new ArgumentNullException(nameof(array1));
-            if (array2 == null) throw new ArgumentNullException(nameof(array2));
-            if (array1.GetLength(0) != array2.GetLength(0))
-            {
-                throw new ArgumentException("matrices sizes are not equal");
             }
         }
 
@@ -628,6 +446,29 @@ namespace MaxRev.Extensions.Matrix
                         yield return new[] { item }.Concat(result);
                 }
             }
+        }
+
+        #endregion
+
+        #region Clone 
+
+        public static T[][] Duplicate<T>(this T[][] matrix)
+        {
+            var result = new T[matrix.Length]
+                .Select(x => new T[matrix[0].Length]).ToArray();
+            for (var i = 0; i < matrix.Length; ++i)
+                for (var j = 0; j < matrix[i].Length; ++j)
+                    result[i][j] = matrix[i][j];
+            return result;
+        }
+
+        public static T[,] Duplicate<T>(this T[,] matrix)
+        {
+            var result = new T[matrix.GetLength(0), matrix.GetLength(1)];
+            for (var i = 0; i < matrix.GetLength(0); ++i)
+                for (var j = 0; j < matrix.GetLength(1); ++j)
+                    result[i, j] = matrix[i, j];
+            return result;
         }
 
         #endregion

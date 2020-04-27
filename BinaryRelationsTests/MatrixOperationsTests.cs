@@ -1,3 +1,4 @@
+using System;
 using BinaryRelationsTests.Helpers;
 using MaxRev.Extensions.Binary;
 using MaxRev.Extensions.Matrix;
@@ -13,6 +14,21 @@ namespace BinaryRelationsTests
         {
         }
 
+        private readonly Random _rnd = new Random();
+
+        [Fact]
+        public void MatrixInverse()
+        {
+            for (int j = 0; j < 10; j++)
+            {
+                var n = _rnd.Next(10, 100);
+                var m = RandomExtensions.MatrixRandom(n, -100, 100);
+                var i = m.Inverse();
+                var I = MatrixExtensions.IdentityD(n);
+                var p = m.Multiply(i);
+                Assert.True(p.AreEqual(I, 1.0E-8));
+            }
+        }
         [Fact]
         public void MultiplyMatrices()
         {
@@ -37,6 +53,81 @@ namespace BinaryRelationsTests
             Assert.Equal(expected.PrintThrough(mock), m1.Multiply(m2).PrintThrough(mock));
         }
 
+        [Fact]
+        public void MultiplyMatricesMNP()
+        {
+            var m1 = new[]
+            {
+                new[] {1, 2, 3},
+                new[] {4, 5, 6},
+            };
+            var m2 = new[]
+            {
+                new[] {1},
+                new[] {3},
+                new[] {5}
+            };
+            var expected = new[]
+            {
+                new[] {22},
+                new[] {49}
+            };
+            Assert.Equal(expected.PrintThrough(mock), m1.Multiply(m2).PrintThrough(mock));
+        }
+        [Fact]
+        public void MultiplyMatricesMNP_Convert()
+        {
+            var m1 = new[]
+            {
+                new[] {1, 2, 3},
+                new[] {4, 5, 6},
+            }.Convert();
+            var m2 = new[]
+            {
+                new[] {1},
+                new[] {3},
+                new[] {5}
+            }.Convert();
+            var expected = new[]
+            {
+                new[] {22},
+                new[] {49}
+            }.Convert();
+            Assert.Equal(expected.PrintThrough(mock), m1.Multiply(m2).PrintThrough(mock));
+        }
+
+        [Fact]
+        public void SquareUnify()
+        {
+            var m1 = new[,]
+            {
+                {1, 2, 3},
+                {4, 5, 6},
+                {7, 8, 9},
+                {2, 3, 4}
+            };
+            var m2 = new[,]
+            {
+                {1, 2, 3},
+                {4, 5, 6},
+            };
+            var expected = (new[,]
+            {
+                {1, 2, 3, 0},
+                {4, 5, 6, 0},
+                {7, 8, 9, 0},
+                {2, 3, 4, 1}
+            }, new[,]
+            {
+                {1, 2, 3, 0},
+                {4, 5, 6, 0},
+                {0, 0, 1, 0},
+                {0, 0, 0, 1},
+            });
+            var actual = m1.SquareUnify(m2);
+            Assert.Equal(expected.Item1, actual.m1);
+            Assert.Equal(expected.Item2, actual.m2);
+        }
         [Fact]
         public void AddMatrices()
         {

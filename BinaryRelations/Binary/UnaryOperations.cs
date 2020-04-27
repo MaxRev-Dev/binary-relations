@@ -106,7 +106,7 @@ namespace MaxRev.Extensions.Binary
             if (x == null) throw new ArgumentNullException(nameof(x));
             ThrowIfNull_NotQuad(matrix1);
             var length = matrix1.GetLength(0);
-            var result = (bool[,])matrix1.Clone();  
+            var result = matrix1.Duplicate();
             x = x.Select(p => --p).OrderBy(a => a).ToArray();
 
             for (int i = 0; i < length; i++)

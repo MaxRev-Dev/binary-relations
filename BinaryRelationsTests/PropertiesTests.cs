@@ -15,7 +15,7 @@ namespace BinaryRelationsTests
         [Fact]
         public void ComplementationReverseEqualsReverseComplementation()
         {
-            var m1 = RandomExtensions.AllocateRandomSquareMatrix(10).Cast<double, bool>();
+            var m1 = MatrixRandomizer.Default.AllocateRandomSquareMatrixI(10).Cast<int, bool>();
             Assert.Equal(m1.Complementation().Reverse(), m1.Reverse().Complementation());
         }
 

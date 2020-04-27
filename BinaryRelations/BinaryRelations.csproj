@@ -3,26 +3,58 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace>MaxRev.Extensions</RootNamespace>
-    <Version>1.3.2</Version>
+    <Version>1.5.0</Version>
     <Authors>MaxRev</Authors>
-    <Copyright>MaxRev © 2019</Copyright>
+    <Copyright>MaxRev © 2020</Copyright>
     <Description>Binary relations and matrix extensions library targeting netstandard2.0</Description>
     <PackageProjectUrl>https://github.com/MaxRev-Dev/binary-relations</PackageProjectUrl>
     <RepositoryUrl>https://github.com/MaxRev-Dev/binary-relations</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>binary-relations, maxrev, matrix, matrix-functions, extension-methods, graphs-theory, graphs, matrix-extensions</PackageTags>
-    <PackageReleaseNotes>- added cartesian product
-
-- ordered indexes in narrowing method
-
-- narrowing returns only a specified region (skips empty indexes)
-
-- sorted indexes for narrowing
-    
-- added NarrowingPreserveSize</PackageReleaseNotes>
+    <PackageReleaseNotes>- more templating and overloads
+- faster multiplication
+- vector cross and product</PackageReleaseNotes>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageId>MaxRev.BinaryRelations</PackageId>
-    <Product>MaxRev.BinaryRelations</Product> 
+    <Product>MaxRev.BinaryRelations</Product>
+    <LangVersion>latest</LangVersion> 
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Update="Matrix\InverseMatrix.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>InverseMatrix.cs</LastGenOutput>
+    </None>
+    <None Update="Matrix\MatrixCommon.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>MatrixCommon.cs</LastGenOutput>
+    </None>
+    <None Update="Matrix\MatrixRandomizer.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>MatrixRandomizer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Matrix\InverseMatrix.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>InverseMatrix.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Matrix\MatrixCommon.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>MatrixCommon.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Matrix\MatrixRandomizer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>MatrixRandomizer.tt</DependentUpon>
+    </Compile>
+  </ItemGroup> 
 
 </Project>
