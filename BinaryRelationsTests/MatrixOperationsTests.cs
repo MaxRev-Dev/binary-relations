@@ -17,6 +17,58 @@ namespace BinaryRelationsTests
         private readonly Random _rnd = new Random();
 
         [Fact]
+        public void RoomSearchEmpty()
+        {
+            var given = new[,]
+            {
+                {1, 1, 1, 1, 1, 1},
+                {1, 1, 1, 1, 1, 1},
+                {1, 1, 1, 1, 1, 1},
+                {1, 1, 1, 1, 1, 1},
+                {1, 1, 1, 1, 1, 1},
+            };
+
+            var expected = Array.Empty<(int, int)[]>();
+            var actual = MatrixExtensions.RoomSearch(given, 0);
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public void RoomSearchMany()
+        {
+            var given = new[,]
+            {
+                {1, 0, 1, 1, 1, 1},
+                {1, 0, 0, 1, 1, 1},
+                {1, 0, 0, 1, 1, 1},
+                {1, 1, 1, 0, 0, 1},
+                {1, 1, 1, 0, 0, 1},
+            };
+
+            var expected = new[]
+            {
+                new[]
+                    {
+                        (2, 1),
+                        (1, 1),
+                        (0, 1),
+                        (1, 2),
+                        (2, 2),
+                    },
+                new[]
+                    {
+                        (4, 3),
+                        (3, 3),
+                        (3, 4), 
+                        (4, 4),
+                    },
+
+            };
+            var actual = MatrixExtensions.RoomSearch(given, 0);
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
         public void MatrixInverse()
         {
             for (int j = 0; j < 10; j++)
@@ -29,6 +81,7 @@ namespace BinaryRelationsTests
                 Assert.True(p.AreEqual(I, 1.0E-8));
             }
         }
+
         [Fact]
         public void MultiplyMatrices()
         {

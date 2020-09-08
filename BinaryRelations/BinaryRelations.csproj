@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace>MaxRev.Extensions</RootNamespace>
-    <Version>1.5.0</Version>
+    <Version>1.6.0</Version>
     <Authors>MaxRev</Authors>
     <Copyright>MaxRev © 2020</Copyright>
     <Description>Binary relations and matrix extensions library targeting netstandard2.0</Description>
@@ -11,9 +11,7 @@
     <RepositoryUrl>https://github.com/MaxRev-Dev/binary-relations</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>binary-relations, maxrev, matrix, matrix-functions, extension-methods, graphs-theory, graphs, matrix-extensions</PackageTags>
-    <PackageReleaseNotes>- more templating and overloads
-- faster multiplication
-- vector cross and product</PackageReleaseNotes>
+    <PackageReleaseNotes>- room search algorithm</PackageReleaseNotes>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageId>MaxRev.BinaryRelations</PackageId>
     <Product>MaxRev.BinaryRelations</Product> 

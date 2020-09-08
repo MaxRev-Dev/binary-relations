@@ -140,7 +140,7 @@ namespace MaxRev.Extensions.Matrix
         }
 
         #endregion
-           
+
         #region Multiply by value additional
 
         public static double[,] Multiply(this double[,] array1, in int x)
@@ -154,7 +154,7 @@ namespace MaxRev.Extensions.Matrix
         }
 
         #endregion
-          
+
         #region Multiply
 
 
@@ -274,6 +274,11 @@ namespace MaxRev.Extensions.Matrix
         public static int[,] AllocateI(in int size)
         {
             return new int[size, size];
+        }
+
+        public static bool[,] AllocateB(in int size)
+        {
+            return new bool[size, size];
         }
 
         public static float[,] AllocateF(in int size)
