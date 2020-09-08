@@ -23,8 +23,16 @@ jobs:
       run: dotnet build --configuration Release --no-restore
     - name: Test
       run: dotnet test --no-restore --verbosity normal
-    - name: Publish Package
-      uses: brandedoutcast/publish-nuget@v2.5.2
+
+    - name: Update NuGet package
       with:
-          PROJECT_FILE_PATH: BinaryRelations/BinaryRelations.csproj
-          NUGET_KEY: ${{secrets.NUGET_API_KEY}}
+          source-url: https://nuget.pkg.github.com/MaxRev-dev/binary-relations/index.json
+      env:
+          NUGET_AUTH_TOKEN: ${{secrets.PACKAGE_TOKEN}}        
+
+    - name: Build solution and generate NuGet package
+      run: |  
+          cd BinaryRelations
+          dotnet pack -c Release -o out  
+    - name: Push generated package to GitHub registry
+      run: dotnet nuget push ./BinaryRelations/out/*.nupkg --skip-duplicate --no-symbols true
