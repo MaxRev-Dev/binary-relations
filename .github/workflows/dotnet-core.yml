@@ -36,4 +36,6 @@ jobs:
           cd BinaryRelations
           dotnet pack -c Release -o out  
     - name: Push generated package to GitHub registry
-      run: dotnet nuget push ./BinaryRelations/out/*.nupkg --skip-duplicate --no-symbols true
+      run: |
+        dotnet tool install -g gpr --no-cache -v q
+        gpr push --api-key $NUGET_AUTH_TOKEN ./BinaryRelations/out/*.nupkg
