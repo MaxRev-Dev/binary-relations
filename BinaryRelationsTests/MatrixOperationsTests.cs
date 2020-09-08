@@ -59,13 +59,22 @@ namespace BinaryRelationsTests
                     {
                         (4, 3),
                         (3, 3),
-                        (3, 4), 
+                        (3, 4),
                         (4, 4),
                     },
 
             };
-            var actual = MatrixExtensions.RoomSearch(given, 0);
-            Assert.Equal(expected, actual);
+            var actual = MatrixExtensions.RoomSearch(given, 0).ToArray();
+            Assert.Equal(expected.Length, actual.Length);
+            for (int i = 0; i < expected.Length; i++)
+            {
+                var cur = actual[i].ToArray();
+                Assert.Equal(expected[i].Length, cur.Length);
+                foreach (var item in cur)
+                {
+                    Assert.Contains(item, expected[i]);
+                }
+            }
         }
 
         [Fact]

@@ -9,13 +9,14 @@ namespace MaxRev.Extensions.Matrix
         {
             var maxX = map.GetLength(0);
             var maxY = map.GetLength(1);
-            var rooms = new List<List<(int x, int y)>>();
+            var rooms = new HashSet<List<(int x, int y)>>();
             RoomCore(map, 0, 0, roomId, maxX, maxY, new bool[maxX, maxY], rooms, new List<(int x, int y)>());
             return rooms;
         }
 
-        private static void RoomCore(int[,] map, int x, int y, int roomId, int maxX, int maxY, 
-            bool[,] visited, ICollection<List<(int x, int y)>> rooms, List<(int x, int y)> current)
+
+        private static void RoomCore(int[,] map, int x, int y, int roomId, int maxX, int maxY,
+            bool[,] visited, ISet<List<(int x, int y)>> rooms, List<(int x, int y)> current)
         {
             if (x < 0 || x >= maxX || y < 0 || y >= maxY || visited[x, y])
                 return;
