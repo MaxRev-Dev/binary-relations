@@ -32,10 +32,9 @@ jobs:
           NUGET_AUTH_TOKEN: ${{secrets.PACKAGE_TOKEN}}        
 
     - name: Build solution and generate NuGet package
-      run: |  
-          cd BinaryRelations
-          dotnet pack -c Release -o out  
+      run: | 
+          dotnet pack -c Release -o ./BinaryRelations/out  
     - name: Push generated package to GitHub registry
       run: |
         dotnet tool install -g gpr --no-cache -v q
-        gpr push --api-key $NUGET_AUTH_TOKEN ./BinaryRelations/out/*.nupkg
+        gpr push --api-key $NUGET_AUTH_TOKEN ./BinaryRelations/out/*.*
